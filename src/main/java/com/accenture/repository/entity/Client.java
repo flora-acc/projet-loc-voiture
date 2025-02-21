@@ -16,28 +16,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+public class Client extends UtilisateurConnecte{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nom;
-
-
-    private String prenom;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "adresse_id")
     private Adresse adresse;
-
-//    @Email(message = "Email invalide") // contrainte de type
-//    @NotBlank(message = "L'email est obligatoire")
-    @Column(unique = true)  // Ajout de l'unicité
-    private String email;
-
-//    @NotBlank(message = "Le mot de passe est obligatoire")
-    private String motDePasse;
 
 //    @NotNull(message = "La date de naissance est obligatoire")
     private LocalDate dateNaissance;
