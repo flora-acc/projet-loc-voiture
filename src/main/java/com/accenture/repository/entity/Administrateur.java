@@ -1,9 +1,7 @@
 package com.accenture.repository.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.accenture.model.Role;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +16,4 @@ public class Administrateur extends UtilisateurConnecte {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String role; // Exemple : SUPER_ADMIN, GESTIONNAIRE, etc.
 }

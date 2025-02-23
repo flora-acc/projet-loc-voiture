@@ -26,8 +26,9 @@ public class AdminController {
         return adminService.trouverTous();
     }
 
-    @PostMapping("/inscription")
-    public ResponseEntity<AdminResponseDto> inscription(@Valid @RequestBody AdminRequestDto adminRequestDto) {
-        return ResponseEntity.ok(adminService.inscrireAdmin(adminRequestDto));
+
+    @PostMapping("/creation")
+    public ResponseEntity<AdminResponseDto> creation(@Valid @RequestBody AdminRequestDto adminRequestDto) {
+        return ResponseEntity.ok(adminService.creerAdmin(adminRequestDto));
     }
 }

@@ -1,6 +1,9 @@
 package com.accenture.repository.entity;
 
+import com.accenture.model.Role;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -20,4 +23,8 @@ public abstract class UtilisateurConnecte {
 
     @NotBlank(message = "Le mot de passe est obligatoire")
     private String motDePasse;
+
+    @Enumerated(EnumType.STRING)
+    private Role role; // Exemple : SUPER_ADMIN, GESTIONNAIRE, etc.
+
 }

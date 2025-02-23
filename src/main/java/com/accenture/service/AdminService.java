@@ -8,7 +8,7 @@ import com.accenture.service.dto.AdminResponseDto;
 import java.util.List;
 
 public interface AdminService {
-    AdminResponseDto inscrireAdmin(AdminRequestDto adminRequestDto);
+    AdminResponseDto creerAdmin(AdminRequestDto adminRequestDto);
 
     List<AdminResponseDto> trouverTous();
 }
