@@ -1,15 +1,20 @@
 package com.accenture.service;
 
 
+import com.accenture.exception.AdminException;
+import com.accenture.exception.ClientException;
 import com.accenture.repository.AdminDao;
 import com.accenture.repository.entity.Administrateur;
+import com.accenture.repository.entity.Client;
 import com.accenture.service.dto.AdminRequestDto;
 import com.accenture.service.dto.AdminResponseDto;
 import com.accenture.service.mapper.AdminMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.accenture.model.Role.ADMIN;
 
@@ -50,5 +55,20 @@ public class AdminServiceImpl implements AdminService {
 
         return adminMapper.toAdminResponseDto(adminDao.save(admin));
     }
+
+    @Override public void supprimerAdmin(AdminRequestDto adminRequestDto) throws EntityNotFoundException {
+        // Vérification des informations d'identification
+        Optional<Administrateur> optionalAdmin = adminDao.findByEmail(adminRequestDto.email());
+        if (optionalAdmin.isEmpty() || !passwordEncoder.matches(adminRequestDto.motDePasse(), optionalAdmin.get().getMotDePasse())) {
+            throw new AdminException("Email ou mot de passe incorrect.");
+        }
+
+        long nombreAdmins = adminDao.count(); if (nombreAdmins <= 1) {
+            throw new AdminException("Il est nécessaire d'avoir au moins un compte administrateur.");
+        }
+        adminDao.delete(optionalAdmin.get()); // Suppression de l'administrateur
+    }
+
+
 
 }

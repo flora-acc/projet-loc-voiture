@@ -50,11 +50,11 @@ public class SecurityConfiguration {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-//    @Bean
-//    UserDetailsManager userDetailsManager(DataSource dataSource){
-//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-//        jdbcUserDetailsManager.setUsersByUsernameQuery("select email,password, 1 from utilisateur where email = ?");
-//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("select email, role from utilisateur where email = ?");
-//        return jdbcUserDetailsManager;
-//    }
+    @Bean
+    UserDetailsManager userDetailsManager(DataSource dataSource){
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+        jdbcUserDetailsManager.setUsersByUsernameQuery("select email, motDePasse, 1 from utilisateurConnecte where email = ?");
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("select email, role from utilisateurConnecte where email = ?");
+        return jdbcUserDetailsManager;
+    }
 }

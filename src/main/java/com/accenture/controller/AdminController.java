@@ -6,6 +6,7 @@ import com.accenture.service.dto.AdminResponseDto;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,4 +32,16 @@ public class AdminController {
     public ResponseEntity<AdminResponseDto> creation(@Valid @RequestBody AdminRequestDto adminRequestDto) {
         return ResponseEntity.ok(adminService.creerAdmin(adminRequestDto));
     }
+
+//    @DeleteMapping("/{id}")
+//    ResponseEntity<Void> supprAdmin(@PathVariable("id") int id){
+//        adminService.supprimerAdmin(id);
+//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
+//    }
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> supprAdmin(@RequestBody AdminRequestDto adminRequestDto){
+        adminService.supprimerAdmin(adminRequestDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
+    }
+
 }

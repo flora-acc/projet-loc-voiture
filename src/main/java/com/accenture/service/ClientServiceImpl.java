@@ -59,7 +59,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void supprimer(int id) throws EntityNotFoundException{
+    public void supprimerClient(int id) throws EntityNotFoundException{
         if(clientDao.existsById(id))
             clientDao.deleteById(id);
         else

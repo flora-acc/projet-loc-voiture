@@ -11,5 +11,6 @@ public interface ClientService {
     ClientResponseDto inscrireClient(ClientRequestDto clientRequestDto);
 
     List<ClientResponseDto> trouverTous();
-    void supprimer(int id) throws ClientException;
+
+    void supprimerClient(int id) throws ClientException;
 }

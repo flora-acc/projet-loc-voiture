@@ -34,7 +34,7 @@ public class ClientController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> suppr(@PathVariable("id") int id){
-        clientService.supprimer(id);
+        clientService.supprimerClient(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }
 
