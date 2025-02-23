@@ -5,6 +5,7 @@ import com.accenture.service.ClientService;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,12 @@ public class ClientController {
     @PostMapping("/inscription")
     public ResponseEntity<ClientResponseDto> inscription(@Valid @RequestBody ClientRequestDto clientRequestDto) {
         return ResponseEntity.ok(clientService.inscrireClient(clientRequestDto));
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> suppr(@PathVariable("id") int id){
+        clientService.supprimer(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }
 
 }

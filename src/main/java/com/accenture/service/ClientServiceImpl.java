@@ -58,6 +58,14 @@ public class ClientServiceImpl implements ClientService {
         return clientMapper.toClientResponseDto(clientDao.save(client));
     }
 
+    @Override
+    public void supprimer(int id) throws EntityNotFoundException{
+        if(clientDao.existsById(id))
+            clientDao.deleteById(id);
+        else
+            throw new ClientException("L'id ne correspond pas");
+    }
+
     /*********************************************
      METHODES PRIVEES
      *********************************************/
