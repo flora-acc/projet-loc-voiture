@@ -38,4 +38,10 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }
 
+    @PatchMapping
+    ResponseEntity<ClientResponseDto> modifierClientPartiellement(@RequestParam String email, @RequestParam String motDePasse, @RequestBody ClientRequestDto clientRequestDto) {
+        ClientResponseDto reponse = clientService.modifierClientPartiellement(email, motDePasse, clientRequestDto);
+        return ResponseEntity.ok(reponse);
+    }
+
 }

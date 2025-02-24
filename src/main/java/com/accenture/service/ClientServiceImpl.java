@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static com.accenture.model.Role.CLIENT;
 
@@ -22,6 +23,7 @@ import static com.accenture.model.Role.CLIENT;
 public class ClientServiceImpl implements ClientService {
 
     public static final String AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE = "Vous devez avoir au moins 18 ans pour vous inscrire.";
+    private static final String EMAIL_INCONNU = "Cet email n'est pas enregistré chez VoitureLoc.";
     private final ClientDao clientDao; // final car on ne touche plus au clientDao
     private final ClientMapper clientMapper;
     private final PasswordEncoder passwordEncoder;
@@ -74,11 +76,47 @@ public class ClientServiceImpl implements ClientService {
 
         clientDao.delete(client);
     }
+
+    @Override
+    public ClientResponseDto modifierClientPartiellement(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException, EntityNotFoundException {
+
+//        Optional<Client> optClient = clientDao.findByEmail(email);
+//
+//        if (optClient.isEmpty())
+//            throw new EntityNotFoundException(EMAIL_INCONNU);$
+//        Client clientExistant = optClient.get();
+        Client clientExistant = clientDao.findByEmail(email)
+                .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
+
+        Client nouveau = clientMapper.toClient(clientRequestDto);
+
+        remplacer(nouveau, clientExistant);
+        Client clientEnreg = clientDao.save(clientExistant);
+        return clientMapper.toClientResponseDto(clientEnreg);
+
+    }
     /*********************************************
      METHODES PRIVEES
      *********************************************/
 
-//       Vérification de la majorité
+    private static void remplacer(Client client, Client clientExistant) { // si ce qui m'est fourni n'est pas null, je remplace l'existant par le nouveau de la méthode PATCH
+        if (client.getNom() != null)
+            clientExistant.setNom(client.getNom());
+        if (client.getPrenom() != null)
+            clientExistant.setPrenom(client.getPrenom());
+        if(client.getAdresse() != null)
+            clientExistant.setAdresse(client.getAdresse());
+        if(client.getDateNaissance() != null)
+            clientExistant.setDateNaissance(client.getDateNaissance());
+        if(client.getEmail() != null)
+            clientExistant.setEmail(client.getEmail());
+        if(client.getMotDePasse() != null)
+            clientExistant.setMotDePasse(client.getMotDePasse());
+        if(client.getPermis() != null)
+            clientExistant.setPermis(client.getPermis());
+    }
+
+    //       Vérification de la majorité
     private static boolean verifierMajorite(LocalDate dateNaissance) {
         return dateNaissance != null &&
                 (dateNaissance.plusYears(18).isBefore(LocalDate.now()) || dateNaissance.plusYears(18).isEqual(LocalDate.now()));

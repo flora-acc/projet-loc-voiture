@@ -36,7 +36,7 @@ class ClientServiceImplTest {
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(null), exception levée")
     @Test
     void testInscrireClient(){
-        assertThrows(AdminException.class, ()-> service.inscrireClient(null));
+        assertThrows(ClientException.class, ()-> service.inscrireClient(null));
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec nom null), exception levée")

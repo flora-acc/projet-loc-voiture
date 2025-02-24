@@ -12,5 +12,7 @@ public interface ClientService {
 
     List<ClientResponseDto> trouverTous();
 
+    ClientResponseDto modifierClientPartiellement(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException;   //PATCH modifier seulement certains champs
+
     void supprimerClient(String email, String motDePasse) throws ClientException;
 }
