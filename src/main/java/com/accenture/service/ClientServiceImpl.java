@@ -1,11 +1,14 @@
 package com.accenture.service;
 
+import com.accenture.exception.AdminException;
 import com.accenture.exception.ClientException;
+import com.accenture.repository.entity.Administrateur;
 import com.accenture.repository.entity.Client;
 import com.accenture.repository.ClientDao;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.mapper.ClientMapper;
+import com.accenture.utils.RegexConstants;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import static com.accenture.model.Role.CLIENT;
 @Service
 public class ClientServiceImpl implements ClientService {
 
+    public static final String AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE = "Vous devez avoir au moins 18 ans pour vous inscrire.";
     private final ClientDao clientDao; // final car on ne touche plus au clientDao
     private final ClientMapper clientMapper;
     private final PasswordEncoder passwordEncoder;
@@ -48,6 +52,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientResponseDto inscrireClient(ClientRequestDto clientRequestDto)  throws ClientException {
 
+        if(clientRequestDto == null)
+            throw new ClientException("le paramètre est obligatoire");
+
         verifierClient(clientRequestDto);
 
         Client client = clientMapper.toClient(clientRequestDto);
@@ -59,13 +66,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void supprimerClient(int id) throws EntityNotFoundException{
-        if(clientDao.existsById(id))
-            clientDao.deleteById(id);
-        else
-            throw new ClientException("L'id ne correspond pas");
-    }
+    public void supprimerClient(String email, String motDePasse) throws EntityNotFoundException {
+        // Vérification des informations d'identification
 
+        Client client = clientDao.findByEmail(email)
+                .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
+
+        clientDao.delete(client);
+    }
     /*********************************************
      METHODES PRIVEES
      *********************************************/
@@ -77,6 +85,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
         private void verifierClient(ClientRequestDto clientRequestDto) throws ClientException {
+
             if (clientRequestDto == null)
                 throw new ClientException("Merci de compléter les informations.");
 
@@ -89,13 +98,31 @@ public class ClientServiceImpl implements ClientService {
             if (clientRequestDto.adresse() == null)
                 throw new ClientException("Merci d'indiquer votre adresse.");
 
-            if (clientRequestDto.dateNaissance() == null || !verifierMajorite(clientRequestDto.dateNaissance()))
-                throw new ClientException("Vous devez avoir au moins 18 ans pour vous inscrire.");
+            if (clientRequestDto.adresse().rue() == null || clientRequestDto.adresse().rue().isBlank())
+                throw new ClientException("Merci d'indiquer votre rue.");
+
+            if (clientRequestDto.adresse().codePostal() == null || clientRequestDto.adresse().codePostal().isBlank())
+                throw new ClientException("Merci d'indiquer votre code postal.");
+
+            if (clientRequestDto.adresse().ville() == null || clientRequestDto.adresse().ville().isBlank())
+                throw new ClientException("Merci d'indiquer votre ville.");
 
             if (clientRequestDto.email() == null || clientRequestDto.email().isBlank())
                 throw new ClientException("Merci d'indiquer votre email.");
-
+            // Vérification du format email avec une regex
+            if (!clientRequestDto.email().matches(RegexConstants.EMAIL_REGEX))
+                throw new ClientException("Format de l'email invalide.");
             if (clientDao.existsByEmail(clientRequestDto.email()))
                 throw new ClientException("Cet email est déjà utilisé !");
+
+            if (clientRequestDto.motDePasse() == null || clientRequestDto.motDePasse().isBlank())
+                throw new ClientException("Merci d'ajouter un mot de passe.");
+            // Vérification du format email avec une regex
+            if (!clientRequestDto.motDePasse().matches(RegexConstants.MOTDEPASSE_REGEX))
+                throw new ClientException("Format du mot de passe invalide.");
+
+            if (clientRequestDto.dateNaissance() == null || !verifierMajorite(clientRequestDto.dateNaissance()))
+                throw new ClientException(AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE);
+
         }
 }

@@ -2,10 +2,8 @@ package com.accenture.service;
 
 
 import com.accenture.exception.AdminException;
-import com.accenture.exception.ClientException;
 import com.accenture.repository.AdminDao;
 import com.accenture.repository.entity.Administrateur;
-import com.accenture.repository.entity.Client;
 import com.accenture.service.dto.AdminRequestDto;
 import com.accenture.service.dto.AdminResponseDto;
 import com.accenture.service.mapper.AdminMapper;
@@ -44,6 +42,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminResponseDto creerAdmin(AdminRequestDto adminRequestDto) {
+
+        if(adminRequestDto == null)
+            throw new AdminException("le paramètre est obligatoire");
+
         if (adminDao.existsByEmail(adminRequestDto.email())) {
             throw new IllegalArgumentException("Email déjà utilisé !");
         }
@@ -56,17 +58,17 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.toAdminResponseDto(adminDao.save(admin));
     }
 
-    @Override public void supprimerAdmin(AdminRequestDto adminRequestDto) throws EntityNotFoundException {
+    @Override
+    public void supprimerAdmin(String email, String motDePasse) throws EntityNotFoundException {
         // Vérification des informations d'identification
-        Optional<Administrateur> optionalAdmin = adminDao.findByEmail(adminRequestDto.email());
-        if (optionalAdmin.isEmpty() || !passwordEncoder.matches(adminRequestDto.motDePasse(), optionalAdmin.get().getMotDePasse())) {
-            throw new AdminException("Email ou mot de passe incorrect.");
-        }
+
+        Administrateur admin = adminDao.findByEmail(email)
+                .orElseThrow(() -> new AdminException("Ce compte ne correspond pas"));
 
         long nombreAdmins = adminDao.count(); if (nombreAdmins <= 1) {
             throw new AdminException("Il est nécessaire d'avoir au moins un compte administrateur.");
         }
-        adminDao.delete(optionalAdmin.get()); // Suppression de l'administrateur
+        adminDao.delete(admin);
     }
 
 

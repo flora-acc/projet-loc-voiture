@@ -12,5 +12,5 @@ public interface ClientService {
 
     List<ClientResponseDto> trouverTous();
 
-    void supprimerClient(int id) throws ClientException;
+    void supprimerClient(String email, String motDePasse) throws ClientException;
 }

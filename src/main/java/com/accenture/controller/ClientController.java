@@ -32,9 +32,9 @@ public class ClientController {
         return ResponseEntity.ok(clientService.inscrireClient(clientRequestDto));
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<Void> suppr(@PathVariable("id") int id){
-        clientService.supprimerClient(id);
+    @DeleteMapping
+    ResponseEntity<Void> suppr(@RequestParam String email, @RequestParam String motDePasse){
+        clientService.supprimerClient(email, motDePasse);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }
 

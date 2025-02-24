@@ -19,6 +19,7 @@ public class AdminController {
     private AdminService adminService;
 
     public AdminController(AdminService adminService) {
+
         this.adminService = adminService;
     }
 
@@ -33,14 +34,9 @@ public class AdminController {
         return ResponseEntity.ok(adminService.creerAdmin(adminRequestDto));
     }
 
-//    @DeleteMapping("/{id}")
-//    ResponseEntity<Void> supprAdmin(@PathVariable("id") int id){
-//        adminService.supprimerAdmin(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
-//    }
-    @DeleteMapping("/{id}")
-    ResponseEntity<Void> supprAdmin(@RequestBody AdminRequestDto adminRequestDto){
-        adminService.supprimerAdmin(adminRequestDto);
+    @DeleteMapping
+    ResponseEntity<Void> supprAdmin(@RequestParam String email, @RequestParam String motDePasse) {
+        adminService.supprimerAdmin(email, motDePasse);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }
 
