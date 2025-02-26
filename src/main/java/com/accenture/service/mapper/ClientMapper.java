@@ -1,6 +1,9 @@
 package com.accenture.service.mapper;
 
+import com.accenture.repository.entity.Adresse;
 import com.accenture.repository.entity.Client;
+import com.accenture.service.dto.AdresseRequestDto;
+import com.accenture.service.dto.AdresseResponseDto;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import org.mapstruct.Mapper;
@@ -10,4 +13,5 @@ public interface ClientMapper {
 
     Client toClient(ClientRequestDto clientRequestDto);
     ClientResponseDto toClientResponseDto (Client client);
+
 }

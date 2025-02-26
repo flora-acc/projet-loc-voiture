@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-
 import static com.accenture.model.Role.CLIENT;
 
 @Service
@@ -75,6 +73,27 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
 
         clientDao.delete(client);
+    }
+
+    @Override
+    public ClientResponseDto modifierClient(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException, EntityNotFoundException {
+
+        Client clientExistant = clientDao.findByEmail(email)
+                .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
+
+        verifierClient(clientRequestDto);
+
+        // Crée un nouvel objet client avec les données envoyées dans la requête
+        Client clientMisAJour = clientMapper.toClient(clientRequestDto);
+
+        // On conserve l'ID, l'email et la date d'inscription du client existant
+        clientMisAJour.setId(clientExistant.getId());
+        clientMisAJour.setEmail(clientExistant.getEmail());
+        clientMisAJour.setDateInscription(clientExistant.getDateInscription());
+
+        Client clientEnreg = clientDao.save(clientExistant);
+
+        return clientMapper.toClientResponseDto(clientEnreg);
     }
 
     @Override

@@ -10,9 +10,9 @@ import com.accenture.service.mapper.AdminMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.accenture.model.Role.ADMIN;
 
