@@ -15,7 +15,7 @@ public abstract class Vehicule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotBlank
     private String marque;
     @NotBlank
@@ -23,9 +23,9 @@ public abstract class Vehicule {
     @NotBlank
     private String couleur;
 
-    private int tarifBase;
-    private int kilometrage;
-    private boolean actif;
-    private boolean retireParc;
+    private Integer tarifBase;
+    private Integer kilometrage;
+    private Boolean actif;
+    private Boolean retireParc;
 
 }

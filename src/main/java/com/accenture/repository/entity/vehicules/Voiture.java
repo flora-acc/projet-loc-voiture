@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,18 +15,17 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Voiture extends Vehicule {
 
-    @NotBlank
-    private int nbPlaces;
+    @NotNull
+    private Integer nbPlaces;
     @Enumerated(EnumType.STRING)
     private Carburant carburant;
-    @NotBlank
-    private int nbPortes;
+    @NotNull
+    private Integer nbPortes;
     @NotBlank
     private String transmission;
-    @NotBlank
-    private boolean climatisation;// true = Oui, false = Non
-    @NotBlank
-    private int nbBagages;
+    private Boolean climatisation;// true = Oui, false = Non
+    @NotNull
+    private Integer nbBagages;
     @Enumerated(EnumType.STRING)
     private Type type;
 

@@ -34,13 +34,15 @@ public class SecurityConfiguration {
                         ).permitAll()
                         .requestMatchers("/client/**").permitAll()
                         .requestMatchers("/admin/**").permitAll()
-                        .requestMatchers("/admin/creation").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/locations/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/locations/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/locations/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH,"/locations/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/locations/**").hasAnyRole("ADMIN","SUPERADMIN") // superadmin est inventé juste pour l'exemple
-                        .anyRequest().authenticated()
+                                .requestMatchers("/location/**").permitAll()
+//                        .requestMatchers("/admin/creation").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.GET,"/location/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST,"/location/**").permitAll()
+//                        .requestMatchers(HttpMethod.PUT,"/location/**").permitAll()
+//                        .requestMatchers(HttpMethod.PATCH,"/location/**").permitAll()
+//                                .requestMatchers(HttpMethod.DELETE,"/location/**").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE,"/location/**").hasAnyRole("ADMIN","SUPERADMIN") // superadmin est inventé juste pour l'exemple
+                        .anyRequest().permitAll()  // attrape toutes les requêtes restantes qui n'ont pas encore été filtrées ou autorisées
                 );
         return http.build();
     }

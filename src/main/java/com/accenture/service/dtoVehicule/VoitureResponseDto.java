@@ -5,15 +5,16 @@ import com.accenture.model.Type;
 import jakarta.validation.constraints.NotBlank;
 
 public record VoitureResponseDto(
+        Integer id,
         String marque,
         String modele,
         String couleur,
-        int nbPlaces,
+        Integer nbPlaces,
         Carburant carburant,
-        int nbPortes,
+        Integer nbPortes,
         String transmission,
-        boolean climatisation,
-        int nbBagages,
+        Boolean climatisation,
+        Integer nbBagages,
         Type type
 ) {
 }

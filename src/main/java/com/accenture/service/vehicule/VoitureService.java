@@ -5,6 +5,10 @@ import com.accenture.service.dto.AdminResponseDto;
 import com.accenture.service.dtoVehicule.VoitureRequestDto;
 import com.accenture.service.dtoVehicule.VoitureResponseDto;
 
+import java.util.List;
+
 public interface VoitureService {
-    VoitureResponseDto choisirVoiture(VoitureRequestDto voitureRequestDto);
+    VoitureResponseDto ajouterVoiture(VoitureRequestDto voitureRequestDto);
+    List<VoitureResponseDto> listeVoiture();
+    List<VoitureResponseDto> filtrerVoitures(Boolean retireParc, Boolean actif);
 }

@@ -3,6 +3,7 @@ package com.accenture.service.dtoVehicule;
 import com.accenture.model.Carburant;
 import com.accenture.model.Type;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record VoitureRequestDto( // ce qu'on demande à l'utilisateur en entrée
                                  @NotBlank
@@ -11,19 +12,16 @@ public record VoitureRequestDto( // ce qu'on demande à l'utilisateur en entrée
                                  String modele,
                                  @NotBlank
                                  String couleur,
-                                 @NotBlank
-                                 int nbPlaces,
-                                 @NotBlank
+                                 @NotNull
+                                 Integer nbPlaces,
                                  Carburant carburant,
-                                @NotBlank
-                                int nbPortes,
+                                @NotNull
+                                 Integer nbPortes,
                                 @NotBlank
                                 String transmission,
-                                @NotBlank
-                                boolean climatisation,
-                                @NotBlank
-                                int nbBagages,
-                                @NotBlank
+                                Boolean climatisation,
+                                @NotNull
+                                 Integer nbBagages,
                                 Type type
                                  ) {
 }
