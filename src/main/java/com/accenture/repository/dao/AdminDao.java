@@ -1,7 +1,6 @@
-package com.accenture.repository;
+package com.accenture.repository.dao;
 
 import com.accenture.repository.entity.Administrateur;
-import com.accenture.repository.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -12,5 +11,4 @@ public interface AdminDao extends JpaRepository<Administrateur, Integer> {
 
     Optional<Administrateur> findByEmail(String email);
 
-    long count();
 }

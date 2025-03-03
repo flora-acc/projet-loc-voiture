@@ -1,10 +1,10 @@
-package com.accenture.service.vehicule;
+package com.accenture.service;
 
-import com.accenture.repository.entity.vehicules.Voiture;
-import com.accenture.repository.vehicule.VoitureDao;
-import com.accenture.service.dtoVehicule.VoitureRequestDto;
-import com.accenture.service.dtoVehicule.VoitureResponseDto;
-import com.accenture.service.mapperVehicule.VoitureMapper;
+import com.accenture.repository.entity.Voiture;
+import com.accenture.repository.dao.VoitureDao;
+import com.accenture.service.dto.VoitureRequestDto;
+import com.accenture.service.dto.VoitureResponseDto;
+import com.accenture.service.mapper.VoitureMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class VoitureServiceImpl implements VoitureService{
     }
 
     @Override
-    public List<VoitureResponseDto> listeVoiture() {
+    public List<VoitureResponseDto> afficherVoitures() {
         List<Voiture> listeV = voitureDao.findAll();
         return listeV.stream()
                 .map(voiture -> voitureMapper.toVoitureResponseDto(voiture))
@@ -45,14 +45,12 @@ public class VoitureServiceImpl implements VoitureService{
                     .filter(v -> v.getRetireParc() == retireParc) // compare si l'état de la voiture (true/false) correspond à celui demandé par l'utilisateur.
                     .collect(Collectors.toList());
         }
-
         // Filtrer les voitures actives (uniquement sur la liste déjà filtrée par retireParc)
         if (actif != null) {
             voitures = voitures.stream()
                     .filter(v -> v.getActif() == actif)
                     .collect(Collectors.toList());
         }
-
         // Conversion en DTO
         return voitures.stream().map(voitureMapper::toVoitureResponseDto).collect(Collectors.toList());
     }

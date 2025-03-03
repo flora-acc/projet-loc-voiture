@@ -1,8 +1,7 @@
-package com.accenture.service.dtoVehicule;
+package com.accenture.service.dto;
 
 import com.accenture.model.Carburant;
 import com.accenture.model.Type;
-import jakarta.validation.constraints.NotBlank;
 
 public record VoitureResponseDto(
         Integer id,
@@ -15,6 +14,8 @@ public record VoitureResponseDto(
         String transmission,
         Boolean climatisation,
         Integer nbBagages,
-        Type type
+        Type type,
+        Boolean retireParc,
+        Boolean actif
 ) {
 }

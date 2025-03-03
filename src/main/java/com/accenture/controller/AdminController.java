@@ -24,18 +24,17 @@ public class AdminController {
     }
 
     @GetMapping
-    List<AdminResponseDto> listeAdmins() {
+    List<AdminResponseDto> afficherAdmins() {
         return adminService.trouverTous();
     }
 
-
-    @PostMapping("/creation")
-    public ResponseEntity<AdminResponseDto> creation(@Valid @RequestBody AdminRequestDto adminRequestDto) {
+    @PostMapping
+    public ResponseEntity<AdminResponseDto> creerAdmin(@Valid @RequestBody AdminRequestDto adminRequestDto) {
         return ResponseEntity.ok(adminService.creerAdmin(adminRequestDto));
     }
 
     @DeleteMapping
-    ResponseEntity<Void> supprAdmin(@RequestParam String email, @RequestParam String motDePasse) {
+    ResponseEntity<Void> supprimerAdmin(@RequestParam String email, @RequestParam String motDePasse) {
         adminService.supprimerAdmin(email, motDePasse);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }

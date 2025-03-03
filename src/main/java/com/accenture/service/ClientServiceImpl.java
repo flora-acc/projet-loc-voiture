@@ -1,10 +1,8 @@
 package com.accenture.service;
 
-import com.accenture.exception.AdminException;
 import com.accenture.exception.ClientException;
-import com.accenture.repository.entity.Administrateur;
 import com.accenture.repository.entity.Client;
-import com.accenture.repository.ClientDao;
+import com.accenture.repository.dao.ClientDao;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.mapper.ClientMapper;
@@ -21,7 +19,6 @@ import static com.accenture.model.Role.CLIENT;
 public class ClientServiceImpl implements ClientService {
 
     public static final String AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE = "Vous devez avoir au moins 18 ans pour vous inscrire.";
-    private static final String EMAIL_INCONNU = "Cet email n'est pas enregistré chez VoitureLoc.";
     private final ClientDao clientDao; // final car on ne touche plus au clientDao
     private final ClientMapper clientMapper;
     private final PasswordEncoder passwordEncoder;
@@ -72,38 +69,36 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientDao.findByEmail(email)
                 .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
 
-        clientDao.delete(client);
+        if (client.getMotDePasse().equals(motDePasse)) {
+            clientDao.delete(client);
+        }
+        else throw new ClientException("Identifiants incorrects");
     }
 
-    @Override
-    public ClientResponseDto modifierClient(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException, EntityNotFoundException {
-
-        Client clientExistant = clientDao.findByEmail(email)
-                .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
-
-        verifierClient(clientRequestDto);
-
-        // Crée un nouvel objet client avec les données envoyées dans la requête
-        Client clientMisAJour = clientMapper.toClient(clientRequestDto);
-
-        // On conserve l'ID, l'email et la date d'inscription du client existant
-        clientMisAJour.setId(clientExistant.getId());
-        clientMisAJour.setEmail(clientExistant.getEmail());
-        clientMisAJour.setDateInscription(clientExistant.getDateInscription());
-
-        Client clientEnreg = clientDao.save(clientExistant);
-
-        return clientMapper.toClientResponseDto(clientEnreg);
-    }
-
-    @Override
-    public ClientResponseDto modifierClientPartiellement(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException, EntityNotFoundException {
-
-//        Optional<Client> optClient = clientDao.findByEmail(email);
+//    @Override
+//    public ClientResponseDto modifierClient(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException, EntityNotFoundException {
 //
-//        if (optClient.isEmpty())
-//            throw new EntityNotFoundException(EMAIL_INCONNU);$
-//        Client clientExistant = optClient.get();
+//        Client clientExistant = clientDao.findByEmail(email)
+//                .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
+//
+//        verifierClient(clientRequestDto);
+//
+//        // Crée un nouvel objet client avec les données envoyées dans la requête
+//        Client clientMisAJour = clientMapper.toClient(clientRequestDto);
+//
+//        // On conserve l'ID, l'email et la date d'inscription du client existant
+//        clientMisAJour.setId(clientExistant.getId());
+//        clientMisAJour.setEmail(clientExistant.getEmail());
+//        clientMisAJour.setDateInscription(clientExistant.getDateInscription());
+//
+//        Client clientEnreg = clientDao.save(clientExistant);
+//
+//        return clientMapper.toClientResponseDto(clientEnreg);
+//    }
+
+    @Override
+    public ClientResponseDto modifierClientPartiellement(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException {
+
         Client clientExistant = clientDao.findByEmail(email)
                 .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
 

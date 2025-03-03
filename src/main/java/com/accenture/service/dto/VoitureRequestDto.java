@@ -1,4 +1,4 @@
-package com.accenture.service.dtoVehicule;
+package com.accenture.service.dto;
 
 import com.accenture.model.Carburant;
 import com.accenture.model.Type;
@@ -22,6 +22,10 @@ public record VoitureRequestDto( // ce qu'on demande à l'utilisateur en entrée
                                 Boolean climatisation,
                                 @NotNull
                                  Integer nbBagages,
-                                Type type
+                                Type type,
+                                 @NotNull
+                                 Boolean retireParc,
+                                 @NotNull
+                                 Boolean actif
                                  ) {
 }

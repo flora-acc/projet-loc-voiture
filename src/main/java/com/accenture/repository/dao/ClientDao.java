@@ -1,4 +1,4 @@
-package com.accenture.repository;
+package com.accenture.repository.dao;
 
 import com.accenture.repository.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;

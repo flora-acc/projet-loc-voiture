@@ -27,7 +27,7 @@ public class ClientController {
         return clientService.trouverTous();
     }
 
-    @PostMapping("/inscription")
+    @PostMapping
     public ResponseEntity<ClientResponseDto> inscription(@Valid @RequestBody ClientRequestDto clientRequestDto) {
         return ResponseEntity.ok(clientService.inscrireClient(clientRequestDto));
     }
@@ -38,11 +38,11 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }
 
-    @PutMapping
-    ResponseEntity<ClientResponseDto> modifierClient(@RequestParam String email, @RequestParam String motDePasse, @RequestBody @Valid ClientRequestDto clientRequestDto) {
-        ClientResponseDto reponse = clientService.modifierClient(email, motDePasse, clientRequestDto);
-        return ResponseEntity.ok(reponse);
-    }
+//    @PutMapping
+//    ResponseEntity<ClientResponseDto> modifierClient(@RequestParam String email, @RequestParam String motDePasse, @RequestBody @Valid ClientRequestDto clientRequestDto) {
+//        ClientResponseDto reponse = clientService.modifierClient(email, motDePasse, clientRequestDto);
+//        return ResponseEntity.ok(reponse);
+//    }
 
 
     @PatchMapping

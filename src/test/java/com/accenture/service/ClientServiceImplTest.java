@@ -1,16 +1,13 @@
 package com.accenture.service;
 
-import com.accenture.exception.AdminException;
 import com.accenture.exception.ClientException;
 import com.accenture.model.Permis;
-import com.accenture.repository.AdminDao;
-import com.accenture.repository.ClientDao;
+import com.accenture.repository.dao.ClientDao;
 import com.accenture.repository.entity.Adresse;
 import com.accenture.repository.entity.Client;
 import com.accenture.service.dto.AdresseRequestDto;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
-import com.accenture.service.mapper.AdminMapper;
 import com.accenture.service.mapper.ClientMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -264,12 +262,86 @@ class ClientServiceImplTest {
         Mockito.when(mapperMock.toClientResponseDto(clientApresEnreg)).thenReturn(responseDto);
 
         // Test
-        ClientResponseDto result = service.inscrireClient(requestDto);
+        ClientResponseDto resultat = service.inscrireClient(requestDto);
 
         // Vérifications
-        assertSame(responseDto, result);
+        assertSame(responseDto, resultat);
         Mockito.verify(daoMock, Mockito.times(1)).save(clientAvantEnreg);
         assertEquals("encodedPassword", clientAvantEnreg.getMotDePasse()); // Vérifier si le mot de passe a bien été encodé
     }
+
+    @DisplayName(" Test supprimerClient() : si l'email est inexistant dans la base de données, l'exception est levée")
+    @Test
+    void testSupprimerClientEmailIntrouvable(){
+        // Given
+        String email = "emailTest";
+        Mockito.when(daoMock.findByEmail(email)).thenReturn(Optional.empty());
+
+        // When
+
+        // Then
+        assertThrows(ClientException.class, ()-> service.supprimerClient(email, ""));
+    }
+
+    @DisplayName(" Test supprimerClient() : si le client existe, mais le mot de passe ne correspond pas, une exception est levée.")
+    @Test
+    void testSupprimerClientMotDePasseIncorrect(){
+        Client client = new Client();
+        client.setMotDePasse("password123");
+        Mockito.when(daoMock.findByEmail("email")).thenReturn(Optional.of(client));
+
+        assertThrows(ClientException.class, () -> {
+            service.supprimerClient("email", "wrongPassword");
+        });
+    }
+
+    @DisplayName(" Test supprimerClient() : si le client existe et que le mot de passe est correct, le client est supprimé")
+    @Test
+    void testSupprimerClientOk(){
+        Client client = new Client();
+        client.setMotDePasse("password123");
+        Mockito.when(daoMock.findByEmail("email")).thenReturn(Optional.of(client));
+
+        service.supprimerClient("email", "password123");
+
+        Mockito.verify(daoMock, Mockito.times(1)).delete(client);
+    }
+
+    @DisplayName(" Test modifierClientPartiellement() : si l'email est inexistant dans la base de données, l'exception est levée")
+    @Test
+    void testModifierClientPartiellementEmailIntrouvable(){
+        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"test@test.fr","Ceciestuntest@1",LocalDate.of(1992,7,22), List.of(Permis.B));
+        String email = "emailTest"; // email d'identification, celui utilisé pour retrouver un client existant dans la base de données
+        Mockito.when(daoMock.findByEmail(email)).thenReturn(Optional.empty());
+
+        assertThrows(ClientException.class, ()-> service.modifierClientPartiellement(email, "test",dto));
+    }
+
+//    @DisplayName("Test modifierClientPartiellement() : la modification est enregistrée en base de données")
+//    @Test
+//    void testModifierClientPartiellementOk() {
+//        // Given
+//        Client clientExistant = creerClientFlorian();
+//        String email = clientExistant.getEmail();
+//        String motDePasse = clientExistant.getMotDePasse();
+//
+//        ClientRequestDto clientRequestDto = new ClientRequestDto("NouveauNom", clientExistant.getPrenom(),
+//                new AdresseRequestDto(clientExistant.getAdresse().getRue(),
+//                        clientExistant.getAdresse().getCodePostal(),
+//                        clientExistant.getAdresse().getVille()),
+//                clientExistant.getEmail(), clientExistant.getMotDePasse(),
+//                clientExistant.getDateNaissance(), clientExistant.getPermis());
+//
+//        Mockito.when(daoMock.findByEmail(email)).thenReturn(Optional.of(clientExistant));
+//        Mockito.when(daoMock.save(Mockito.any(Client.class))).thenReturn(clientExistant);
+//
+//        // When
+//        ClientResponseDto response = service.modifierClientPartiellement(email, motDePasse, clientRequestDto);
+//
+//        // Then
+//        assertNotNull(response);
+//        assertEquals("NouveauNom", response.nom());
+//        Mockito.verify(daoMock, Mockito.times(1)).save(clientExistant);
+//    }
 
 }

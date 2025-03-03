@@ -1,4 +1,4 @@
-package com.accenture.repository.entity.vehicules;
+package com.accenture.repository.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

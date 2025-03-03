@@ -1,4 +1,4 @@
-package com.accenture.repository.entity.vehicules;
+package com.accenture.repository.entity;
 
 import com.accenture.model.Carburant;
 import com.accenture.model.Type;

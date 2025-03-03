@@ -1,10 +1,9 @@
-package com.accenture.controller.vehicule;
+package com.accenture.controller;
 
-import com.accenture.service.dtoVehicule.VoitureRequestDto;
-import com.accenture.service.dtoVehicule.VoitureResponseDto;
-import com.accenture.service.vehicule.VoitureService;
+import com.accenture.service.dto.VoitureRequestDto;
+import com.accenture.service.dto.VoitureResponseDto;
+import com.accenture.service.VoitureService;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class VoitureController {
 
     @GetMapping
     List<VoitureResponseDto> tous(){
-        return voitureService.listeVoiture();
+        return voitureService.afficherVoitures();
     }
 
     @GetMapping("/filtre")
@@ -32,8 +31,8 @@ public class VoitureController {
         return voitureService.filtrerVoitures(retireParc,actif);
     }
 
-    @PostMapping("/voiture")
-    public ResponseEntity<VoitureResponseDto> creation(@Valid @RequestBody VoitureRequestDto voitureRequestDto) {
-        return ResponseEntity.ok(voitureService.ajouterVoiture(voitureRequestDto));
+    @PostMapping
+    public VoitureResponseDto creerVoiture(@Valid @RequestBody VoitureRequestDto voitureRequestDto) {
+        return voitureService.ajouterVoiture(voitureRequestDto);
     }
 }
