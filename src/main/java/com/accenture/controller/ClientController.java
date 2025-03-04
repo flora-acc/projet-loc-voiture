@@ -27,7 +27,7 @@ import java.util.List;
 @Tag(name = "Gestion des clients", description = "Interface de gestion des clients de l'application")
 public class ClientController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
     private ClientService clientService;
 

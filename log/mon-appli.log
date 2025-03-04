@@ -330,3 +330,41 @@ com.accenture.exception.ClientException: Identifiants incorrects
 2025-03-04 12:04:51 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
 2025-03-04 12:04:51 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
 2025-03-04 12:04:54 [restartedMain] INFO  com.accenture.Application - Started Application in 2.394 seconds (process running for 310.636)
+2025-03-04 12:16:02 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 24920 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 12:16:02 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 12:16:02 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 12:16:04 [restartedMain] INFO  com.accenture.Application - Started Application in 2.8 seconds (process running for 981.236)
+2025-03-04 12:16:19 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 24920 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 12:16:19 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 12:16:19 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 12:16:21 [restartedMain] INFO  com.accenture.Application - Started Application in 1.193 seconds (process running for 997.432)
+2025-03-04 15:05:34 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 17320 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 15:05:34 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 15:05:34 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 15:05:47 [restartedMain] INFO  com.accenture.Application - Started Application in 13.504 seconds (process running for 16.455)
+2025-03-04 15:37:23 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 17320 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 15:37:23 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 15:37:23 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 15:37:42 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 17320 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 15:37:42 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 15:37:42 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 15:37:45 [restartedMain] INFO  com.accenture.Application - Started Application in 2.817 seconds (process running for 1934.613)
+2025-03-04 15:43:10 [http-nio-8080-exec-6] DEBUG c.a.controller.VoitureController - La suppression de la voiture 1 a bien été effectuée.
+2025-03-04 15:45:11 [http-nio-8080-exec-8] DEBUG c.a.controller.VoitureController - La suppression de la voiture 2 a bien été effectuée.
+2025-03-04 15:45:19 [http-nio-8080-exec-9] DEBUG c.a.controller.VoitureController - La suppression de la voiture 3 a bien été effectuée.
+2025-03-04 15:55:17 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 17320 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 15:55:17 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 15:55:17 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 15:55:18 [restartedMain] INFO  com.accenture.Application - Started Application in 1.603 seconds (process running for 2988.269)
+2025-03-04 15:55:33 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 17320 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 15:55:33 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 15:55:33 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 15:55:35 [restartedMain] INFO  com.accenture.Application - Started Application in 1.76 seconds (process running for 3005.031)
+2025-03-04 15:57:55 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 17320 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 15:57:55 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 15:57:55 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 15:57:56 [restartedMain] INFO  com.accenture.Application - Started Application in 0.753 seconds (process running for 3145.957)
+2025-03-04 16:03:13 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 30004 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 16:03:13 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 16:03:13 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 16:03:24 [restartedMain] INFO  com.accenture.Application - Started Application in 12.363 seconds (process running for 15.298)

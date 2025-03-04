@@ -1,10 +1,14 @@
 package com.accenture.service;
 
+import com.accenture.exception.ClientException;
+import com.accenture.exception.VehiculeException;
+import com.accenture.repository.entity.Client;
 import com.accenture.repository.entity.Voiture;
 import com.accenture.repository.dao.VoitureDao;
 import com.accenture.service.dto.VoitureRequestDto;
 import com.accenture.service.dto.VoitureResponseDto;
 import com.accenture.service.mapper.VoitureMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +57,13 @@ public class VoitureServiceImpl implements VoitureService{
         }
         // Conversion en DTO
         return voitures.stream().map(voitureMapper::toVoitureResponseDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void supprimerVoiture(int id) throws VehiculeException {
+        Voiture voiture = voitureDao.findById(id)
+                .orElseThrow(() -> new VehiculeException("Cet id ne correspond pas."));
+
+            voitureDao.delete(voiture);
     }
 }

@@ -24,6 +24,10 @@ public record VoitureRequestDto( // ce qu'on demande à l'utilisateur en entrée
                                  Integer nbBagages,
                                 Type type,
                                  @NotNull
+                                 Integer tarifBase,
+                                 @NotNull
+                                 Integer kilometrage,
+                                 @NotNull
                                  Boolean retireParc,
                                  @NotNull
                                  Boolean actif
