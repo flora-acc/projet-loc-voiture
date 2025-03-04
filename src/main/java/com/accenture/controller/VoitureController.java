@@ -2,6 +2,7 @@ package com.accenture.controller;
 
 import com.accenture.repository.entity.Client;
 import com.accenture.repository.entity.Voiture;
+import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.dto.VoitureRequestDto;
 import com.accenture.service.dto.VoitureResponseDto;
 import com.accenture.service.VoitureService;
@@ -43,7 +44,21 @@ public class VoitureController {
                     content = @Content) })
     @GetMapping
     List<VoitureResponseDto> trouverToutes(){
+
         return voitureService.afficherVoitures();
+    }
+
+    @Operation(summary = "Afficher une voiture par id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "La voiture a été ajoutée.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Client.class)) }),
+            @ApiResponse(responseCode = "400", description = "La voiture n'a pas pu être récupérée.") })
+    @GetMapping("/{id}")
+    public ResponseEntity<VoitureResponseDto> trouverUneVoiture(int id) {
+
+        VoitureResponseDto voiture = voitureService.trouverVoiture(id);
+        return ResponseEntity.ok(voiture);
     }
 
     @Operation(summary = "Afficher les voitures par filtre")

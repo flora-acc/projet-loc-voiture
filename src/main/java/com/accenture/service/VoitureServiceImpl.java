@@ -5,6 +5,7 @@ import com.accenture.exception.VehiculeException;
 import com.accenture.repository.entity.Client;
 import com.accenture.repository.entity.Voiture;
 import com.accenture.repository.dao.VoitureDao;
+import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.dto.VoitureRequestDto;
 import com.accenture.service.dto.VoitureResponseDto;
 import com.accenture.service.mapper.VoitureMapper;
@@ -39,6 +40,14 @@ public class VoitureServiceImpl implements VoitureService{
         return listeV.stream()
                 .map(voiture -> voitureMapper.toVoitureResponseDto(voiture))
                 .toList();
+    }
+
+    @Override
+    public VoitureResponseDto trouverVoiture(int id) throws VehiculeException {
+        Voiture voiture = voitureDao.findById(id)
+                .orElseThrow(() -> new VehiculeException("Cet id ne correspond à aucune voiture."));
+
+        return voitureMapper.toVoitureResponseDto(voiture);
     }
 
     public List<VoitureResponseDto> filtrerVoitures(Boolean retireParc,Boolean actif) {
