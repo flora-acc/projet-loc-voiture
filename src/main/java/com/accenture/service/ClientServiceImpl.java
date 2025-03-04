@@ -1,6 +1,9 @@
 package com.accenture.service;
 
+import com.accenture.exception.AdminException;
 import com.accenture.exception.ClientException;
+import com.accenture.repository.entity.Administrateur;
+import com.accenture.repository.entity.Adresse;
 import com.accenture.repository.entity.Client;
 import com.accenture.repository.dao.ClientDao;
 import com.accenture.service.dto.ClientRequestDto;
@@ -40,6 +43,17 @@ public class ClientServiceImpl implements ClientService {
                 .toList();
     }
 
+    @Override
+    public ClientResponseDto trouverClient(String email, String motDePasse) throws ClientException {
+        Client client = clientDao.findByEmail(email)
+                .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
+
+        if (!client.getMotDePasse().equals(motDePasse)) {
+            throw new ClientException("Identifiants incorrects");
+        }
+        return clientMapper.toClientResponseDto(client);
+    }
+
     /**
      *
      * @param clientRequestDto
@@ -65,11 +79,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void supprimerClient(String email, String motDePasse) throws EntityNotFoundException {
         // Vérification des informations d'identification
-
         Client client = clientDao.findByEmail(email)
                 .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
 
-        if (client.getMotDePasse().equals(motDePasse)) {
+        if (passwordEncoder.matches(motDePasse, client.getMotDePasse())) {
             clientDao.delete(client);
         }
         else throw new ClientException("Identifiants incorrects");
@@ -102,32 +115,35 @@ public class ClientServiceImpl implements ClientService {
         Client clientExistant = clientDao.findByEmail(email)
                 .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
 
-        Client nouveau = clientMapper.toClient(clientRequestDto);
+        // TODO : vérifier mot de passe
 
-        remplacer(nouveau, clientExistant);
-        Client clientEnreg = clientDao.save(clientExistant);
-        return clientMapper.toClientResponseDto(clientEnreg);
+        remplacer(clientRequestDto, clientExistant);
+        Client clientMisAJour = clientDao.save(clientExistant);
+        return clientMapper.toClientResponseDto(clientMisAJour);
 
     }
     /*********************************************
      METHODES PRIVEES
      *********************************************/
 
-    private static void remplacer(Client client, Client clientExistant) { // si ce qui m'est fourni n'est pas null, je remplace l'existant par le nouveau de la méthode PATCH
-        if (client.getNom() != null)
-            clientExistant.setNom(client.getNom());
-        if (client.getPrenom() != null)
-            clientExistant.setPrenom(client.getPrenom());
-        if(client.getAdresse() != null)
-            clientExistant.setAdresse(client.getAdresse());
-        if(client.getDateNaissance() != null)
-            clientExistant.setDateNaissance(client.getDateNaissance());
-        if(client.getEmail() != null)
-            clientExistant.setEmail(client.getEmail());
-        if(client.getMotDePasse() != null)
-            clientExistant.setMotDePasse(client.getMotDePasse());
-        if(client.getPermis() != null)
-            clientExistant.setPermis(client.getPermis());
+    private static void remplacer(ClientRequestDto client, Client clientExistant) { // si ce qui m'est fourni n'est pas null, je remplace l'existant par le nouveau de la méthode PATCH
+        if (client.nom() != null)
+            clientExistant.setNom(client.nom());
+        if (client.prenom() != null)
+            clientExistant.setPrenom(client.prenom());
+        if(client.adresse() != null) {
+            clientExistant.getAdresse().setRue(client.adresse().rue());
+            clientExistant.getAdresse().setCodePostal(client.adresse().codePostal());
+            clientExistant.getAdresse().setVille((client.adresse().ville()));
+        }
+        if(client.dateNaissance() != null)
+            clientExistant.setDateNaissance(client.dateNaissance());
+        if(client.email() != null)
+            clientExistant.setEmail(client.email());
+        if(client.motDePasse() != null)
+            clientExistant.setMotDePasse(client.motDePasse());
+        if(client.permis() != null)
+            clientExistant.setPermis(client.permis());
     }
 
     //       Vérification de la majorité

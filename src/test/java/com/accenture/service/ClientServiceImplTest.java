@@ -6,6 +6,7 @@ import com.accenture.repository.dao.ClientDao;
 import com.accenture.repository.entity.Adresse;
 import com.accenture.repository.entity.Client;
 import com.accenture.service.dto.AdresseRequestDto;
+import com.accenture.service.dto.AdresseResponseDto;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.mapper.ClientMapper;
@@ -298,11 +299,13 @@ class ClientServiceImplTest {
     @DisplayName(" Test supprimerClient() : si le client existe et que le mot de passe est correct, le client est supprimé")
     @Test
     void testSupprimerClientOk(){
+        String motDePasseFourni = "password123";
         Client client = new Client();
         client.setMotDePasse("password123");
         Mockito.when(daoMock.findByEmail("email")).thenReturn(Optional.of(client));
+        Mockito.when(passwordEncoder.matches(motDePasseFourni, client.getMotDePasse())).thenReturn(true);
 
-        service.supprimerClient("email", "password123");
+        service.supprimerClient("email", motDePasseFourni);
 
         Mockito.verify(daoMock, Mockito.times(1)).delete(client);
     }
@@ -317,31 +320,42 @@ class ClientServiceImplTest {
         assertThrows(ClientException.class, ()-> service.modifierClientPartiellement(email, "test",dto));
     }
 
-//    @DisplayName("Test modifierClientPartiellement() : la modification est enregistrée en base de données")
-//    @Test
-//    void testModifierClientPartiellementOk() {
-//        // Given
-//        Client clientExistant = creerClientFlorian();
-//        String email = clientExistant.getEmail();
-//        String motDePasse = clientExistant.getMotDePasse();
-//
-//        ClientRequestDto clientRequestDto = new ClientRequestDto("NouveauNom", clientExistant.getPrenom(),
-//                new AdresseRequestDto(clientExistant.getAdresse().getRue(),
-//                        clientExistant.getAdresse().getCodePostal(),
-//                        clientExistant.getAdresse().getVille()),
-//                clientExistant.getEmail(), clientExistant.getMotDePasse(),
-//                clientExistant.getDateNaissance(), clientExistant.getPermis());
-//
-//        Mockito.when(daoMock.findByEmail(email)).thenReturn(Optional.of(clientExistant));
-//        Mockito.when(daoMock.save(Mockito.any(Client.class))).thenReturn(clientExistant);
-//
-//        // When
-//        ClientResponseDto response = service.modifierClientPartiellement(email, motDePasse, clientRequestDto);
-//
-//        // Then
-//        assertNotNull(response);
-//        assertEquals("NouveauNom", response.nom());
-//        Mockito.verify(daoMock, Mockito.times(1)).save(clientExistant);
-//    }
+    @DisplayName("Test modifierClientPartiellement() : la modification est enregistrée en base de données")
+    @Test
+    void testModifierClientPartiellementOk() {
+        // Given
+        Client clientExistant = creerClientFlorian();
+        String email = clientExistant.getEmail();
+        String motDePasse = clientExistant.getMotDePasse();
+
+        ClientRequestDto clientRequestDto = new ClientRequestDto("NouveauNom", clientExistant.getPrenom(),
+                new AdresseRequestDto(clientExistant.getAdresse().getRue(),
+                        clientExistant.getAdresse().getCodePostal(),
+                        clientExistant.getAdresse().getVille()),
+                clientExistant.getEmail(), clientExistant.getMotDePasse(),
+                clientExistant.getDateNaissance(), clientExistant.getPermis());
+
+        Client clientMisAJour = creerClientFlorian();
+        clientMisAJour.setNom("NouveauNom");
+
+        ClientResponseDto responseDto = new ClientResponseDto(1, "NouveauNom", clientMisAJour.getPrenom(),
+                new Adresse(1, clientMisAJour.getAdresse().getRue(),
+                        clientMisAJour.getAdresse().getCodePostal(),
+                        clientMisAJour.getAdresse().getVille()),
+                clientMisAJour.getEmail(),
+                clientMisAJour.getDateNaissance(), clientMisAJour.getPermis());
+
+        Mockito.when(daoMock.findByEmail(email)).thenReturn(Optional.of(clientExistant));
+        Mockito.when(daoMock.save(Mockito.any(Client.class))).thenReturn(clientExistant);
+        Mockito.when(mapperMock.toClientResponseDto(clientMisAJour)).thenReturn(responseDto);
+
+        // When
+        ClientResponseDto response = service.modifierClientPartiellement(email, motDePasse, clientRequestDto);
+
+        // Then
+        assertNotNull(response);
+        assertEquals("NouveauNom", response.nom());
+        Mockito.verify(daoMock, Mockito.times(1)).save(clientExistant);
+    }
 
 }

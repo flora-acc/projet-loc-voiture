@@ -65,7 +65,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void supprimerAdmin(String email, String motDePasse) throws EntityNotFoundException {
+    public void supprimerAdmin(String email, String motDePasse) throws AdminException {
         // Vérification des informations d'identification
         Administrateur admin = adminDao.findByEmail(email)
                 .orElseThrow(() -> new AdminException("Ce compte ne correspond pas"));
