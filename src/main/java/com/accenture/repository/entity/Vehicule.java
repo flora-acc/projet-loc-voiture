@@ -22,6 +22,8 @@ public abstract class Vehicule {
     private String modele;
     @NotBlank
     private String couleur;
+    @NotBlank
+    private String transmission;
 
     private Integer tarifBase;
     private Integer kilometrage;

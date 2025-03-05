@@ -101,147 +101,185 @@ class ClientServiceImplTest {
 
     private static ClientResponseDto creerClientResponseDtoLucie() {
         return new ClientResponseDto(
-                1,"Limoges","Lucie",new Adresse(1,"12 Rue de la Paix","75001","Paris"),"emailLu@email.fr",LocalDate.of(1999,4,2),List.of(Permis.A)
+                1,
+                "Limoges",
+                "Lucie",
+                new Adresse(
+                        1,
+                        "12 Rue de la Paix",
+                        "75001",
+                        "Paris"),
+                "emailLu@email.fr",
+                LocalDate.of(1999,4,2),
+                List.of(Permis.A)
         );
     }
 
     private static ClientResponseDto creerClientResponseDtoFlorian() {
         return new ClientResponseDto(
-                1,"Bon","Florian",new Adresse(1,"10 Rue de la Paix","75001","Paris"),"emailFlo@email.fr",LocalDate.of(1992,4,2),List.of(Permis.A)
+                1,
+                "Bon",
+                "Florian",
+                new Adresse(
+                        1,
+                        "10 Rue de la Paix",
+                        "75001",
+                        "Paris"),
+                "emailFlo@email.fr",
+                LocalDate.of(1992,4,2),
+                List.of(Permis.A)
         );
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(null), exception levée")
     @Test
     void testInscrireClient(){
-        assertThrows(ClientException.class, ()-> service.inscrireClient(null));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(null));
+        assertEquals("le paramètre est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec nom null), exception levée")
     @Test
-    void testInscrireClientSansNom(){
-        ClientRequestDto dto = new ClientRequestDto(null,"test",new AdresseRequestDto("test","test","test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientSansNom() {
+        ClientRequestDto dto = new ClientRequestDto(null, "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le nom est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec nom blank), exception levée")
     @Test
-    void testInscrireClientNomBlank(){
-        ClientRequestDto dto = new ClientRequestDto("\t","test",new AdresseRequestDto("test","test","test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientNomBlank() {
+        ClientRequestDto dto = new ClientRequestDto("\t", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le nom est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec prenom null), exception levée")
     @Test
-    void testInscrireClientSansPrenom(){
-        ClientRequestDto dto = new ClientRequestDto("test",null,new AdresseRequestDto("test","test","test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientSansPrenom() {
+        ClientRequestDto dto = new ClientRequestDto("test", null, new AdresseRequestDto("test", "test", "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le prénom est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec prenom blank), exception levée")
     @Test
-    void testInscrireClientPrenomBlank(){
-        ClientRequestDto dto = new ClientRequestDto("test","\t",new AdresseRequestDto("test","test","test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientPrenomBlank() {
+        ClientRequestDto dto = new ClientRequestDto("test", "\t", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le prénom est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec adresse.rue null), exception levée")
     @Test
-    void testInscrireClientRueNull(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto(null,"test","test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientRueNull() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto(null, "test", "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("La rue de l'adresse est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec adresse.rue blank), exception levée")
     @Test
-    void testInscrireClientRueBlank(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("\t","test","test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientRueBlank() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("\t", "test", "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("La rue de l'adresse est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec adresse.codepostal null), exception levée")
     @Test
-    void testInscrireClientCodePostalNull(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test",null,"test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientCodePostalNull() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", null, "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le code postal est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec adresse.codepostal blank), exception levée")
     @Test
-    void testInscrireClientCodePostalBlank(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","\t","test"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientCodePostalBlank() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "\t", "test"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le code postal est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec adresse.ville null), exception levée")
     @Test
-    void testInscrireClientVilleNull(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test",null),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientVilleNull() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", null), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("La ville est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec adresse.ville blank), exception levée")
     @Test
-    void testInscrireClientVilleBlank(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","\t"),"test@test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientVilleBlank() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "\t"), "test@test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("La ville est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec email null), exception levée")
     @Test
-    void testInscrireClientEmailNull(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),null,"test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientEmailNull() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), null, "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("L'email est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec email blank), exception levée")
     @Test
-    void testInscrireClientEmailBlank(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"\t","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientEmailBlank() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "\t", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("L'email est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec email invalide format), exception levée")
     @Test
-    void testInscrireClientEmailInvalide(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientEmailInvalide() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test.fr", "test", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le format de l'email est invalide", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec motDePasse null), exception levée")
     @Test
-    void testInscrireClientMotDePasseNull(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"test@test.fr",null,LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientMotDePasseNull() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", null, LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le mot de passe est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec motDePasse blank), exception levée")
     @Test
-    void testInscrireClientMotDePasseBlank(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"test@test.fr","\t",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientMotDePasseBlank() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "\t", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le mot de passe est obligatoire", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec mot de passe invalide format), exception levée")
     @Test
-    void testInscrireClientMotDePasseInvalide(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"test.fr","test",LocalDate.of(1992,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientMotDePasseInvalide() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "123", LocalDate.of(1992, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals("Le mot de passe ne respecte pas le format requis", exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec dateNaissance null), exception levée")
     @Test
-    void testInscrireClientDateNaissanceNull(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"test@test.fr","Ceciestuntest@1",null, List.of(Permis.B));
-        ClientException clientException = assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
-        assertEquals(ClientServiceImpl.AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE,clientException.getMessage());
+    void testInscrireClientDateNaissanceNull() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "Ceciestuntest@1", null, List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals(ClientServiceImpl.AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE, exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec dateNaissance invalide), exception levée")
     @Test
-    void testInscrireClientDateNaissanceInvalide(){
-        ClientRequestDto dto = new ClientRequestDto("test","test",new AdresseRequestDto("test","test","test"),"test@test.fr","Ceciestuntest@1",LocalDate.of(2024,7,22), List.of(Permis.B));
-        assertThrows(ClientException.class, ()-> service.inscrireClient(dto));
+    void testInscrireClientDateNaissanceInvalide() {
+        ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "Ceciestuntest@1", LocalDate.of(2024, 7, 22), List.of(Permis.B));
+        ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
+        assertEquals(ClientServiceImpl.AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE, exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto OK), alors save() est appelée et un ClientResponseDto renvoyé")

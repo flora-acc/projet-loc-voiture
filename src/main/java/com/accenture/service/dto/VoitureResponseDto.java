@@ -15,6 +15,8 @@ public record VoitureResponseDto(
         Boolean climatisation,
         Integer nbBagages,
         Type type,
+        Integer tarifBase,
+        Integer kilometrage,
         Boolean retireParc,
         Boolean actif
 ) {

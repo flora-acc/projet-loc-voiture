@@ -1,7 +1,8 @@
 package com.accenture.repository.entity;
 
-import com.accenture.model.Carburant;
-import com.accenture.model.Type;
+
+import com.accenture.model.Cylindree;
+import com.accenture.model.TypeMoto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,18 +14,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Voiture extends Vehicule {
+public class Moto extends Vehicule {
 
-    @NotNull
-    private Integer nbPlaces;
+
     @Enumerated(EnumType.STRING)
-    private Carburant carburant;
-    @NotNull
-    private Integer nbPortes;
-    private Boolean climatisation;// true = Oui, false = Non
-    @NotNull
-    private Integer nbBagages;
+    private Cylindree cylindree;
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private TypeMoto typeMoto;
+    @NotNull
+    private Integer poids;
+    @NotNull
+    private Integer puissanceKw;
+    @NotBlank
+    private String hauteurSelle;
 
 }

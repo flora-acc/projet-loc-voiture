@@ -38,6 +38,7 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * Récupère tous les clients de la base de données et les convertit en DTO.
+     *
      * @return une liste d'objets ClientResponseDto représentant tous les clients
      */
     @Override
@@ -49,7 +50,8 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * Récupère un client en fonction de son email et de son mot de passe
-     * @param email Email du client à rechercher.
+     *
+     * @param email      Email du client à rechercher.
      * @param motDePasse Mot de passe pour vérifier l'identité du client.
      * @return Un objet ClientResponseDto représentant le client trouvé.
      * @throws ClientException Si le client n'existe pas ou si les identifiants sont incorrects.
@@ -67,16 +69,18 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * Inscrit un nouveau client dans le système
+     *
      * @param clientRequestDto Objet de transfert contenant les données du client à inscrire.
      * @return Un objet ClientResponseDto représentant le client inscrit.
      * @throws ClientException Si les données fournies sont invalides ou si le paramètre est null.
      */
     @Override
-    public ClientResponseDto inscrireClient(ClientRequestDto clientRequestDto)  throws ClientException {
+    public ClientResponseDto inscrireClient(ClientRequestDto clientRequestDto) throws ClientException {
 
-        if(clientRequestDto == null)
+        if (clientRequestDto == null)
             throw new ClientException("le paramètre est obligatoire");
 
+        verifierConstantesClient(clientRequestDto);
         verifierClient(clientRequestDto);
 
         Client client = clientMapper.toClient(clientRequestDto);
@@ -89,7 +93,8 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * Supprime un client en fonction de son email et de son mot de passe
-     * @param email Email du client à supprimer.
+     *
+     * @param email      Email du client à supprimer.
      * @param motDePasse Mot de passe pour vérifier l'identité du client
      * @throws ClientException Si les informations d'identification sont incorrectes et si le client n'existe pas dans la base de données.
      */
@@ -101,8 +106,7 @@ public class ClientServiceImpl implements ClientService {
 
         if (passwordEncoder.matches(motDePasse, client.getMotDePasse())) {
             clientDao.delete(client);
-        }
-        else throw new ClientException("Identifiants incorrects");
+        } else throw new ClientException("Identifiants incorrects");
     }
 
 //    @Override
@@ -128,8 +132,9 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * Met à jour partiellement une entité Client existante
-     * @param email L'email du client pour l'identifier
-     * @param motDePasse Le mot de passe pour vérifier l'identité du client.
+     *
+     * @param email            L'email du client pour l'identifier
+     * @param motDePasse       Le mot de passe pour vérifier l'identité du client.
      * @param clientRequestDto Objet de transfert contenant les nouvelles données à mettre à jour.
      * @return Un objet ClientResponseDto représentant le client mis à jour
      * @throws ClientException Si le compte client n'existe pas ou si les identifiants sont incorrects.
@@ -148,6 +153,7 @@ public class ClientServiceImpl implements ClientService {
         Client clientMisAJour = clientDao.save(clientExistant);
         return clientMapper.toClientResponseDto(clientMisAJour);
     }
+
     /*********************************************
      METHODES PRIVEES
      *********************************************/
@@ -157,18 +163,18 @@ public class ClientServiceImpl implements ClientService {
             clientExistant.setNom(client.nom());
         if (client.prenom() != null)
             clientExistant.setPrenom(client.prenom());
-        if(client.adresse() != null) {
+        if (client.adresse() != null) {
             clientExistant.getAdresse().setRue(client.adresse().rue());
             clientExistant.getAdresse().setCodePostal(client.adresse().codePostal());
             clientExistant.getAdresse().setVille((client.adresse().ville()));
         }
-        if(client.dateNaissance() != null)
+        if (client.dateNaissance() != null)
             clientExistant.setDateNaissance(client.dateNaissance());
-        if(client.email() != null)
+        if (client.email() != null)
             clientExistant.setEmail(client.email());
-        if(client.motDePasse() != null)
+        if (client.motDePasse() != null)
             clientExistant.setMotDePasse(client.motDePasse());
-        if(client.permis() != null)
+        if (client.permis() != null)
             clientExistant.setPermis(client.permis());
     }
 
@@ -178,45 +184,48 @@ public class ClientServiceImpl implements ClientService {
                 (dateNaissance.plusYears(18).isBefore(LocalDate.now()) || dateNaissance.plusYears(18).isEqual(LocalDate.now()));
     }
 
-        private void verifierClient(ClientRequestDto clientRequestDto) throws ClientException {
+    private void verifierConstantesClient(ClientRequestDto clientRequestDto) throws ClientException {
+        // Vérification du format email avec une regex
+        if (!clientRequestDto.email().matches(RegexConstants.EMAIL_REGEX))
+            throw new ClientException("Format de l'email invalide.");
+        // Vérification du format email avec une regex
+        if (!clientRequestDto.motDePasse().matches(RegexConstants.MOTDEPASSE_REGEX))
+            throw new ClientException("Format du mot de passe invalide.");
+    }
 
-            if (clientRequestDto == null)
-                throw new ClientException("Merci de compléter les informations.");
-
-            if (clientRequestDto.prenom() == null || clientRequestDto.prenom().isBlank()) // blank pour les Strings, empty la chaine est 0 il n'y a rien même après un trim
-                throw new ClientException("Merci d'indiquer votre prénom.");
-
-            if (clientRequestDto.nom() == null || clientRequestDto.nom().isBlank())
-                throw new ClientException("Merci d'indiquer votre nom.");
-
-            if (clientRequestDto.adresse() == null)
-                throw new ClientException("Merci d'indiquer votre adresse.");
-
-            if (clientRequestDto.adresse().rue() == null || clientRequestDto.adresse().rue().isBlank())
-                throw new ClientException("Merci d'indiquer votre rue.");
-
-            if (clientRequestDto.adresse().codePostal() == null || clientRequestDto.adresse().codePostal().isBlank())
-                throw new ClientException("Merci d'indiquer votre code postal.");
-
-            if (clientRequestDto.adresse().ville() == null || clientRequestDto.adresse().ville().isBlank())
-                throw new ClientException("Merci d'indiquer votre ville.");
-
-            if (clientRequestDto.email() == null || clientRequestDto.email().isBlank())
-                throw new ClientException("Merci d'indiquer votre email.");
-            // Vérification du format email avec une regex
-            if (!clientRequestDto.email().matches(RegexConstants.EMAIL_REGEX))
-                throw new ClientException("Format de l'email invalide.");
-            if (clientDao.existsByEmail(clientRequestDto.email()))
-                throw new ClientException("Cet email est déjà utilisé !");
-
-            if (clientRequestDto.motDePasse() == null || clientRequestDto.motDePasse().isBlank())
-                throw new ClientException("Merci d'ajouter un mot de passe.");
-            // Vérification du format email avec une regex
-            if (!clientRequestDto.motDePasse().matches(RegexConstants.MOTDEPASSE_REGEX))
-                throw new ClientException("Format du mot de passe invalide.");
-
-            if (clientRequestDto.dateNaissance() == null || !verifierMajorite(clientRequestDto.dateNaissance()))
-                throw new ClientException(AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE);
+    private void verifierChamp(String champ, String messageErreur) throws ClientException {
+        if (champ == null || champ.isBlank()) {
+            throw new ClientException(messageErreur);
 
         }
+    }
+
+    private void verifierClient(ClientRequestDto clientRequestDto) throws ClientException {
+        if (clientRequestDto == null) {
+            throw new ClientException("Merci de compléter les informations.");
+        }
+
+        verifierChamp(clientRequestDto.prenom(), "Merci d'indiquer votre prénom.");
+        verifierChamp(clientRequestDto.nom(), "Merci d'indiquer votre nom.");
+        verifierChamp(clientRequestDto.email(), "Merci d'indiquer votre email.");
+        verifierChamp(clientRequestDto.motDePasse(), "Merci d'ajouter un mot de passe.");
+
+        if (clientDao.existsByEmail(clientRequestDto.email())) {
+            throw new ClientException("Cet email est déjà utilisé !");
+        }
+
+        // Valider l'adresse
+        if (clientRequestDto.adresse() == null) {
+            throw new ClientException("Merci d'indiquer votre adresse.");
+        }
+        verifierChamp(clientRequestDto.adresse().rue(), "Merci d'indiquer votre rue.");
+        verifierChamp(clientRequestDto.adresse().codePostal(), "Merci d'indiquer votre code postal.");
+        verifierChamp(clientRequestDto.adresse().ville(), "Merci d'indiquer votre ville.");
+
+        // Valider la date de naissance
+        if (clientRequestDto.dateNaissance() == null || !verifierMajorite(clientRequestDto.dateNaissance())) {
+            throw new ClientException(AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE);
+        }
+    }
+
 }

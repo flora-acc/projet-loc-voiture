@@ -88,9 +88,9 @@ public class VoitureController {
     @PostMapping
     public VoitureResponseDto creerVoiture(@Valid
                                                @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                                                       description = "Saisir les informations du nouveau client", required = true,
+                                                       description = "Saisir les informations de la voiture", required = true,
                                                        content = @Content(mediaType = "application/json",
-                                                               schema = @Schema(implementation = Client.class),
+                                                               schema = @Schema(implementation = Voiture.class),
                                                                examples = @ExampleObject(value = """
                                                                        { "marque": "Peugeot", 
                                                                        "modele": "208", 
@@ -129,8 +129,8 @@ public class VoitureController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Voiture.class)) }),
             @ApiResponse(responseCode = "400", description = "La modification est impossible") })
-    @PatchMapping
-    ResponseEntity<VoitureResponseDto> modifierVoiturePartiellement(int id, @RequestBody VoitureRequestDto voitureRequestDto) {
+    @PatchMapping("/{id}")
+    ResponseEntity<VoitureResponseDto> modifierVoiturePartiellement(@PathVariable int id, @RequestBody VoitureRequestDto voitureRequestDto) {
         VoitureResponseDto reponse = voitureService.modifierVoiturePartiellement(id, voitureRequestDto);
         return ResponseEntity.ok(reponse);
     }

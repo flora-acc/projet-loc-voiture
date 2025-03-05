@@ -1,5 +1,6 @@
 package com.accenture.service;
 
+import com.accenture.exception.ClientException;
 import com.accenture.exception.VehiculeException;
 import com.accenture.repository.entity.Voiture;
 import com.accenture.repository.dao.VoitureDao;
@@ -28,12 +29,15 @@ public class VoitureServiceImpl implements VoitureService{
 
     /**
      * Ajoute une nouvelle voiture dans la base données
-     * @param dto Objet contenant les informations de la voiture à ajouter
+     * @param voitureRequestDto Objet contenant les informations de la voiture à ajouter
      * @return un objet VoitureResponseDto qui représente la voiture à ajouter
      */
     @Override
-    public VoitureResponseDto ajouterVoiture(VoitureRequestDto dto) {
-        Voiture voiture = voitureMapper.toVoiture(dto);
+    public VoitureResponseDto ajouterVoiture(VoitureRequestDto voitureRequestDto) {
+
+        if(voitureRequestDto == null)
+            throw new ClientException("Informations à compléter");
+        Voiture voiture = voitureMapper.toVoiture(voitureRequestDto);
 
         Voiture voitureEnreg = voitureDao.save(voiture);
         return voitureMapper.toVoitureResponseDto(voitureEnreg);
@@ -100,7 +104,11 @@ public class VoitureServiceImpl implements VoitureService{
         Voiture voiture = voitureDao.findById(id)
                 .orElseThrow(() -> new VehiculeException("Cet id ne correspond pas."));
 
-            voitureDao.delete(voiture);
+        if (voiture.getActif() != null && voiture.getActif()) {
+            throw new VehiculeException("Impossible de supprimer une voiture en location.");
+        }
+
+        voitureDao.delete(voiture);
     }
 
     /**
@@ -114,7 +122,7 @@ public class VoitureServiceImpl implements VoitureService{
     public VoitureResponseDto modifierVoiturePartiellement(int id, VoitureRequestDto voitureRequestDto) throws VehiculeException {
 
         Voiture voitureExistante = voitureDao.findById(id)
-                .orElseThrow(() -> new VehiculeException("Ce compte ne correspond pas"));
+                .orElseThrow(() -> new VehiculeException("Ce véhicule n'est pas identifié"));
 
         remplacer(voitureRequestDto, voitureExistante);
         Voiture voitureMisAJour = voitureDao.save(voitureExistante);
@@ -131,7 +139,7 @@ public class VoitureServiceImpl implements VoitureService{
         if (voiture.modele() != null)
             voitureExistant.setModele(voiture.modele());
         if(voiture.couleur() != null)
-            voitureExistant.setModele(voiture.couleur());
+            voitureExistant.setCouleur(voiture.couleur());
         if(voiture.nbPlaces() != null)
             voitureExistant.setNbPlaces(voiture.nbPlaces());
         if(voiture.carburant() != null)
