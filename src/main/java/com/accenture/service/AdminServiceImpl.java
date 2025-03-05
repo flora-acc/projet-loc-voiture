@@ -24,6 +24,7 @@ import static com.accenture.model.Role.ADMIN;
 @Service
 public class AdminServiceImpl implements AdminService {
 
+
     private static final Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
     private final AdminDao adminDao; // final car on ne touche plus au adminDao
     private final AdminMapper adminMapper;
@@ -39,6 +40,10 @@ public class AdminServiceImpl implements AdminService {
      METHODES PUBLIQUES
      *********************************************/
 
+    /**
+     * Récupère toutes les entités administrateur dans la base de données et les convertit en DTO.
+     * @return Une liste d'objets AdminResponseDto.
+     */
     @Override
     public List<AdminResponseDto> trouverTous() {
         return adminDao.findAll().stream()
@@ -46,6 +51,12 @@ public class AdminServiceImpl implements AdminService {
                 .toList();
     }
 
+    /**
+     * Crée une nouvelle entité Administrateur.
+     * @param adminRequestDto
+     * @return Un objet AdminResponseDto représentant le nouvel administrateur créé.
+     * @throws AdminException Si adminRequestDto est null.
+     */
     @Override
     public AdminResponseDto creerAdmin(AdminRequestDto adminRequestDto) {
 
@@ -53,7 +64,7 @@ public class AdminServiceImpl implements AdminService {
             throw new AdminException("le paramètre est obligatoire");
 
         if (adminDao.existsByEmail(adminRequestDto.email())) {
-            throw new IllegalArgumentException("Email déjà utilisé !");
+            throw new AdminException("Email déjà utilisé !");
         }
 
         Administrateur admin = adminMapper.toAdministrateur(adminRequestDto);
@@ -64,6 +75,12 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.toAdminResponseDto(adminDao.save(admin));
     }
 
+    /**
+     * Supprime une entité Administrateur en fonction de l'email et du mot de passe
+     * @param email
+     * @param motDePasse
+     * @throws AdminException
+     */
     @Override
     public void supprimerAdmin(String email, String motDePasse) throws AdminException {
         // Vérification des informations d'identification
@@ -83,6 +100,14 @@ public class AdminServiceImpl implements AdminService {
         adminDao.delete(admin);
     }
 
+    /**
+     * Met à jour partiellement une entité Administrateur existante.
+     * @param email
+     * @param motDePasse
+     * @param adminRequestDto = Objet de transfert contenant les données à mettre à jour
+     * @return un objet AdminResponseDto représentant l'administrateur mis à jour
+     * @throws AdminException
+     */
     @Override
     public AdminResponseDto modifierAdminPartiellement(String email, String motDePasse, AdminRequestDto adminRequestDto) throws AdminException {
 

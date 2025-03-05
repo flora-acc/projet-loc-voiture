@@ -1,7 +1,9 @@
 package com.accenture.controller;
 
+import com.accenture.repository.entity.Administrateur;
 import com.accenture.repository.entity.Client;
 import com.accenture.repository.entity.Voiture;
+import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.dto.VoitureRequestDto;
 import com.accenture.service.dto.VoitureResponseDto;
@@ -119,5 +121,17 @@ public class VoitureController {
         voitureService.supprimerVoiture(id);
         logger.debug("La suppression de la voiture {} a bien été effectuée.", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
+    }
+
+    @Operation(summary = "Modifier partiellement une voiture")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Les informations de la voiture ont été modifiées avec succès",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Voiture.class)) }),
+            @ApiResponse(responseCode = "400", description = "La modification est impossible") })
+    @PatchMapping
+    ResponseEntity<VoitureResponseDto> modifierVoiturePartiellement(int id, @RequestBody VoitureRequestDto voitureRequestDto) {
+        VoitureResponseDto reponse = voitureService.modifierVoiturePartiellement(id, voitureRequestDto);
+        return ResponseEntity.ok(reponse);
     }
 }

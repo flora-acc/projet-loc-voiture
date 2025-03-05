@@ -15,4 +15,6 @@ public interface VoitureService {
     VoitureResponseDto trouverVoiture(int id) throws VehiculeException;
     List<VoitureResponseDto> filtrerVoitures(Boolean retireParc, Boolean actif);
     void supprimerVoiture(int id) throws VehiculeException;
+    VoitureResponseDto modifierVoiturePartiellement(int id, VoitureRequestDto voitureRequestDto) throws VehiculeException;
+
 }

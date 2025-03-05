@@ -372,3 +372,7 @@ com.accenture.exception.ClientException: Identifiants incorrects
 2025-03-04 16:42:06 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
 2025-03-04 16:42:06 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
 2025-03-04 16:42:18 [restartedMain] INFO  com.accenture.Application - Started Application in 13.054 seconds (process running for 15.131)
+2025-03-04 18:08:34 [restartedMain] INFO  com.accenture.Application - Starting Application using Java 21.0.6 with PID 6384 (C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo\target\classes started by flora.lucie.soler in C:\Users\flora.lucie.soler\Documents\Projet\projet-flora-redo)
+2025-03-04 18:08:34 [restartedMain] DEBUG com.accenture.Application - Running with Spring Boot v3.4.2, Spring v6.2.2
+2025-03-04 18:08:34 [restartedMain] INFO  com.accenture.Application - No active profile set, falling back to 1 default profile: "default"
+2025-03-04 18:08:45 [restartedMain] INFO  com.accenture.Application - Started Application in 10.881 seconds (process running for 13.547)
