@@ -5,13 +5,9 @@ import com.accenture.exception.AdminException;
 import com.accenture.exception.ClientException;
 import com.accenture.repository.dao.AdminDao;
 import com.accenture.repository.entity.Administrateur;
-import com.accenture.repository.entity.Client;
 import com.accenture.service.dto.AdminRequestDto;
 import com.accenture.service.dto.AdminResponseDto;
-import com.accenture.service.dto.ClientRequestDto;
-import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.mapper.AdminMapper;
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
      * @throws AdminException Si adminRequestDto est null.
      */
     @Override
-    public AdminResponseDto creerAdmin(AdminRequestDto adminRequestDto) {
+    public AdminResponseDto creerAdmin(AdminRequestDto adminRequestDto) throws AdminException {
 
         if(adminRequestDto == null)
             throw new AdminException("le paramètre est obligatoire");

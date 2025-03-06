@@ -1,16 +1,11 @@
 package com.accenture.service;
 
-import com.accenture.exception.ClientException;
 import com.accenture.exception.VehiculeException;
 import com.accenture.model.Carburant;
-import com.accenture.model.Permis;
 import com.accenture.model.Type;
 import com.accenture.repository.dao.VoitureDao;
-import com.accenture.repository.entity.Adresse;
-import com.accenture.repository.entity.Client;
 import com.accenture.repository.entity.Voiture;
-import com.accenture.service.dto.ClientResponseDto;
-import com.accenture.service.dto.VoitureResponseDto;
+import com.accenture.service.dto.*;
 import com.accenture.service.mapper.VoitureMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +57,50 @@ class VoitureServiceImplTest {
         assertEquals(dtos, service.afficherVoitures());
 
     }
+
+    @DisplayName(" Test de la méthode ajouterVoiture : si ajouterVoiture(null), exception levée")
+    @Test
+    void testAjouterVoiture(){
+        VehiculeException exception = assertThrows(VehiculeException.class, () -> service.ajouterVoiture(null));
+        assertEquals("Informations à compléter", exception.getMessage());
+    }
+
+    @DisplayName(" Test de la méthode ajouterVoiture : si ajouterVoiture(VoitureRequestDto avec marque null), exception levée")
+    @Test
+    void testAjouterVoitureMarqueNull() {
+        VoitureRequestDto dto = new VoitureRequestDto(null, "test", "test",2,Carburant.HYBRIDE, 4,"test",true,5, Type.CITADINE,100,3000,false,true);
+        VehiculeException exception = assertThrows(VehiculeException.class, () -> service.ajouterVoiture(dto));
+        assertEquals("Merci d'indiquer la marque.", exception.getMessage());
+    }
+
+    @DisplayName(" Test de la méthode ajouterVoiture : si ajouterVoiture(VoitureRequestDto avec marque blank), exception levée")
+    @Test
+    void testAjouterVoitureMarqueBlank() {
+        VoitureRequestDto dto = new VoitureRequestDto("\t", "test", "test",2,Carburant.HYBRIDE, 4,"test",true,5, Type.CITADINE,100,3000,false,true);
+        VehiculeException exception = assertThrows(VehiculeException.class, () -> service.ajouterVoiture(dto));
+        assertEquals("Merci d'indiquer la marque.", exception.getMessage());
+    }
+
+    //TODO : TESTS A COMPLETER
+
+    @DisplayName(" Test supprimerVoiture() : si la voiture existe, mais actif=false, une exception est levée.")
+    @Test
+    void testSupprimerVoiture(){
+        Voiture voiture = new Voiture();
+        voiture.setId(1);
+        voiture.setActif(true);
+        Mockito.when(daoMock.findById(1)).thenReturn(Optional.of(voiture));
+
+        VehiculeException exception = assertThrows(VehiculeException.class, () -> {
+            service.supprimerVoiture(voiture.getId());
+        });
+
+        assertEquals("Impossible de supprimer une voiture en location.", exception.getMessage());
+    }
+
+    /*********************************************
+     METHODES PRIVEES
+     *********************************************/
 
     private static Voiture creerVoitureRenault() {
         Voiture v = new Voiture();
@@ -117,7 +155,7 @@ class VoitureServiceImplTest {
                 12000,
                 false,
                 true
-                 );
+        );
     }
 
     private static VoitureResponseDto creerVoitureResponseDtoBMW() {
@@ -138,27 +176,5 @@ class VoitureServiceImplTest {
                 false,
                 true
         );
-    }
-
-    @DisplayName(" Test de la méthode ajouterVoiture : si ajouterVoiture(null), exception levée")
-    @Test
-    void testAjouterVoiture(){
-        VehiculeException exception = assertThrows(VehiculeException.class, () -> service.ajouterVoiture(null));
-        assertEquals("Informations à compléter", exception.getMessage());
-    }
-
-    @DisplayName(" Test supprimerVoiture() : si la voiture existe, mais actif=false, une exception est levée.")
-    @Test
-    void testSupprimerVoiture(){
-        Voiture voiture = new Voiture();
-        voiture.setId(1);
-        voiture.setActif(true);
-        Mockito.when(daoMock.findById(1)).thenReturn(Optional.of(voiture));
-
-        VehiculeException exception = assertThrows(VehiculeException.class, () -> {
-            service.supprimerVoiture(voiture.getId());
-        });
-
-        assertEquals("Impossible de supprimer une voiture en location.", exception.getMessage());
     }
 }

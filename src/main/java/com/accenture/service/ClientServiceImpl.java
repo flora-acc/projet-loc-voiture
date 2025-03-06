@@ -1,16 +1,13 @@
 package com.accenture.service;
 
-import com.accenture.exception.AdminException;
+
 import com.accenture.exception.ClientException;
-import com.accenture.repository.entity.Administrateur;
-import com.accenture.repository.entity.Adresse;
 import com.accenture.repository.entity.Client;
 import com.accenture.repository.dao.ClientDao;
 import com.accenture.service.dto.ClientRequestDto;
 import com.accenture.service.dto.ClientResponseDto;
 import com.accenture.service.mapper.ClientMapper;
 import com.accenture.utils.RegexConstants;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +18,7 @@ import static com.accenture.model.Role.CLIENT;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    public static final String AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE = "Vous devez avoir au moins 18 ans pour vous inscrire.";
+    public static final String MAJORITE = "Vous devez avoir au moins 18 ans pour vous inscrire.";
     private final ClientDao clientDao; // final car on ne touche plus au clientDao
     private final ClientMapper clientMapper;
     private final PasswordEncoder passwordEncoder;
@@ -108,27 +105,6 @@ public class ClientServiceImpl implements ClientService {
             clientDao.delete(client);
         } else throw new ClientException("Identifiants incorrects");
     }
-
-//    @Override
-//    public ClientResponseDto modifierClient(String email, String motDePasse, ClientRequestDto clientRequestDto) throws ClientException, EntityNotFoundException {
-//
-//        Client clientExistant = clientDao.findByEmail(email)
-//                .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
-//
-//        verifierClient(clientRequestDto);
-//
-//        // Crée un nouvel objet client avec les données envoyées dans la requête
-//        Client clientMisAJour = clientMapper.toClient(clientRequestDto);
-//
-//        // On conserve l'ID, l'email et la date d'inscription du client existant
-//        clientMisAJour.setId(clientExistant.getId());
-//        clientMisAJour.setEmail(clientExistant.getEmail());
-//        clientMisAJour.setDateInscription(clientExistant.getDateInscription());
-//
-//        Client clientEnreg = clientDao.save(clientExistant);
-//
-//        return clientMapper.toClientResponseDto(clientEnreg);
-//    }
 
     /**
      * Met à jour partiellement une entité Client existante
@@ -224,7 +200,7 @@ public class ClientServiceImpl implements ClientService {
 
         // Valider la date de naissance
         if (clientRequestDto.dateNaissance() == null || !verifierMajorite(clientRequestDto.dateNaissance())) {
-            throw new ClientException(AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE);
+            throw new ClientException(MAJORITE);
         }
     }
 

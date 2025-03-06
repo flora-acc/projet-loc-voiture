@@ -4,6 +4,7 @@ import com.accenture.exception.ClientException;
 import com.accenture.exception.VehiculeException;
 import com.accenture.repository.entity.Voiture;
 import com.accenture.repository.dao.VoitureDao;
+import com.accenture.service.dto.MotoRequestDto;
 import com.accenture.service.dto.VoitureRequestDto;
 import com.accenture.service.dto.VoitureResponseDto;
 import com.accenture.service.mapper.VoitureMapper;
@@ -35,8 +36,7 @@ public class VoitureServiceImpl implements VoitureService{
     @Override
     public VoitureResponseDto ajouterVoiture(VoitureRequestDto voitureRequestDto) {
 
-        if(voitureRequestDto == null)
-            throw new ClientException("Informations à compléter");
+        verifierVoiture(voitureRequestDto);
         Voiture voiture = voitureMapper.toVoiture(voitureRequestDto);
 
         Voiture voitureEnreg = voitureDao.save(voiture);
@@ -133,34 +133,69 @@ public class VoitureServiceImpl implements VoitureService{
      METHODES PRIVEES
      *********************************************/
 
-    private static void remplacer(VoitureRequestDto voiture, Voiture voitureExistant) { // si ce qui m'est fourni n'est pas null, je remplace l'existant par le nouveau de la méthode PATCH
+    // Vérification pour les String
+    private void verifierChamp(String champ, String messageErreur) throws VehiculeException {
+        if (champ == null || champ.isBlank()) {
+            throw new VehiculeException(messageErreur);
+        }
+    }
+
+    // Vérification pour les Enums et autres objets
+    private void verifierChamp(Object champ, String messageErreur) throws VehiculeException {
+        if (champ == null) {
+            throw new VehiculeException(messageErreur);
+        }
+    }
+
+    private void verifierVoiture(VoitureRequestDto voitureRequestDto) throws VehiculeException {
+        if (voitureRequestDto == null) {
+            throw new VehiculeException("Merci de compléter les informations.");
+        }
+
+        verifierChamp(voitureRequestDto.marque(), "Merci d'indiquer la marque.");
+        verifierChamp(voitureRequestDto.modele(), "Merci d'indiquer le modele.");
+        verifierChamp(voitureRequestDto.couleur(), "Merci d'indiquer la couleur du vehicule.");
+        verifierChamp(voitureRequestDto.nbPlaces(), "Merci d'ajouter le nombre de places.");
+        verifierChamp(voitureRequestDto.carburant(), "Merci d'ajouter le carburant.");
+        verifierChamp(voitureRequestDto.nbPortes(), "Merci d'ajouter le nombre de portes.");
+        verifierChamp(voitureRequestDto.transmission(), "Merci d'ajouter la transmission.");
+        verifierChamp(voitureRequestDto.climatisation(), "Merci d'ajouter la climatisation.");
+        verifierChamp(voitureRequestDto.nbBagages(), "Merci d'ajouter le nombre de bagages possible.");
+        verifierChamp(voitureRequestDto.type(), "Merci d'ajouter le type.");
+        verifierChamp(voitureRequestDto.tarifBase(), "Merci d'ajouter le tarif de base.");
+        verifierChamp(voitureRequestDto.kilometrage(), "Merci d'ajouter le kilometrage.");
+        verifierChamp(voitureRequestDto.retireParc(), "Merci d'indiquer si la voiture est retirée du parc.");
+        verifierChamp(voitureRequestDto.actif(), "Merci d'indiquer si la moto est en location.");
+    }
+
+    private static void remplacer(VoitureRequestDto voiture, Voiture voitureExistante) { // si ce qui m'est fourni n'est pas null, je remplace l'existant par le nouveau de la méthode PATCH
         if (voiture.marque() != null)
-            voitureExistant.setMarque(voiture.marque());
+            voitureExistante.setMarque(voiture.marque());
         if (voiture.modele() != null)
-            voitureExistant.setModele(voiture.modele());
+            voitureExistante.setModele(voiture.modele());
         if(voiture.couleur() != null)
-            voitureExistant.setCouleur(voiture.couleur());
+            voitureExistante.setCouleur(voiture.couleur());
         if(voiture.nbPlaces() != null)
-            voitureExistant.setNbPlaces(voiture.nbPlaces());
+            voitureExistante.setNbPlaces(voiture.nbPlaces());
         if(voiture.carburant() != null)
-            voitureExistant.setCarburant(voiture.carburant());
+            voitureExistante.setCarburant(voiture.carburant());
         if(voiture.nbPortes() != null)
-            voitureExistant.setNbPortes(voiture.nbPortes());
+            voitureExistante.setNbPortes(voiture.nbPortes());
         if(voiture.transmission() != null)
-            voitureExistant.setTransmission(voiture.transmission());
+            voitureExistante.setTransmission(voiture.transmission());
         if(voiture.climatisation() != null)
-            voitureExistant.setClimatisation(voiture.climatisation());
+            voitureExistante.setClimatisation(voiture.climatisation());
         if(voiture.nbBagages() != null)
-            voitureExistant.setNbBagages(voiture.nbBagages());
+            voitureExistante.setNbBagages(voiture.nbBagages());
         if(voiture.type() != null)
-            voitureExistant.setType(voiture.type());
+            voitureExistante.setType(voiture.type());
         if(voiture.tarifBase() != null)
-            voitureExistant.setTarifBase(voiture.tarifBase());
+            voitureExistante.setTarifBase(voiture.tarifBase());
         if(voiture.kilometrage() != null)
-            voitureExistant.setKilometrage(voiture.kilometrage());
+            voitureExistante.setKilometrage(voiture.kilometrage());
         if(voiture.actif() != null)
-            voitureExistant.setActif(voiture.actif());
+            voitureExistante.setActif(voiture.actif());
         if(voiture.retireParc() != null)
-            voitureExistant.setRetireParc(voiture.retireParc());
+            voitureExistante.setRetireParc(voiture.retireParc());
     }
 }

@@ -61,75 +61,7 @@ class ClientServiceImplTest {
 
     }
 
-    private static Client creerClientLucie() {
-        Client c = new Client();
-        c.setId(1);
-        c.setNom("Limoges");
-        c.setPrenom("Lucie");
-        c.setEmail("emailLu@email.fr");
-        c.setMotDePasse("Ceciestuntest@1");
-        // Création et remplissage de l'adresse
-        Adresse adresse = new Adresse();
-        adresse.setRue("12 Rue de la Paix");
-        adresse.setCodePostal("75001");
-        adresse.setVille("Paris");
-        // Assigner l'adresse au client
-        c.setAdresse(adresse);
-        c.setDateNaissance(LocalDate.of(1999,4,2));
-        c.setPermis(List.of(Permis.A));
-        return c;
-    }
 
-    private static Client creerClientFlorian() {
-        Client c = new Client();
-        c.setId(1);
-        c.setNom("Bon");
-        c.setPrenom("Florian");
-        c.setEmail("emailFlo@email.fr");
-        c.setMotDePasse("Ceciestuntest@1");
-        // Création et remplissage de l'adresse
-        Adresse adresse = new Adresse();
-        adresse.setRue("10 Rue de la Paix");
-        adresse.setCodePostal("75001");
-        adresse.setVille("Paris");
-        // Assigner l'adresse au client
-        c.setAdresse(adresse);
-        c.setDateNaissance(LocalDate.of(1992,4,2));
-        c.setPermis(List.of(Permis.A));
-        return c;
-    }
-
-    private static ClientResponseDto creerClientResponseDtoLucie() {
-        return new ClientResponseDto(
-                1,
-                "Limoges",
-                "Lucie",
-                new Adresse(
-                        1,
-                        "12 Rue de la Paix",
-                        "75001",
-                        "Paris"),
-                "emailLu@email.fr",
-                LocalDate.of(1999,4,2),
-                List.of(Permis.A)
-        );
-    }
-
-    private static ClientResponseDto creerClientResponseDtoFlorian() {
-        return new ClientResponseDto(
-                1,
-                "Bon",
-                "Florian",
-                new Adresse(
-                        1,
-                        "10 Rue de la Paix",
-                        "75001",
-                        "Paris"),
-                "emailFlo@email.fr",
-                LocalDate.of(1992,4,2),
-                List.of(Permis.A)
-        );
-    }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(null), exception levée")
     @Test
@@ -271,7 +203,7 @@ class ClientServiceImplTest {
     void testInscrireClientDateNaissanceNull() {
         ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "Ceciestuntest@1", null, List.of(Permis.B));
         ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
-        assertEquals(ClientServiceImpl.AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE, exception.getMessage());
+        assertEquals(ClientServiceImpl.MAJORITE, exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto avec dateNaissance invalide), exception levée")
@@ -279,7 +211,7 @@ class ClientServiceImplTest {
     void testInscrireClientDateNaissanceInvalide() {
         ClientRequestDto dto = new ClientRequestDto("test", "test", new AdresseRequestDto("test", "test", "test"), "test@test.fr", "Ceciestuntest@1", LocalDate.of(2024, 7, 22), List.of(Permis.B));
         ClientException exception = assertThrows(ClientException.class, () -> service.inscrireClient(dto));
-        assertEquals(ClientServiceImpl.AU_MOINS_18_ANS_POUR_VOUS_INSCRIRE, exception.getMessage());
+        assertEquals(ClientServiceImpl.MAJORITE, exception.getMessage());
     }
 
     @DisplayName(" Test de la méthode inscrireClient : si inscrireClient(ClientRequestDto OK), alors save() est appelée et un ClientResponseDto renvoyé")
@@ -394,6 +326,80 @@ class ClientServiceImplTest {
         assertNotNull(response);
         assertEquals("NouveauNom", response.nom());
         Mockito.verify(daoMock, Mockito.times(1)).save(clientExistant);
+    }
+
+    /*********************************************
+     METHODES PRIVEES
+     *********************************************/
+
+    private static Client creerClientLucie() {
+        Client c = new Client();
+        c.setId(1);
+        c.setNom("Limoges");
+        c.setPrenom("Lucie");
+        c.setEmail("emailLu@email.fr");
+        c.setMotDePasse("Ceciestuntest@1");
+        // Création et remplissage de l'adresse
+        Adresse adresse = new Adresse();
+        adresse.setRue("12 Rue de la Paix");
+        adresse.setCodePostal("75001");
+        adresse.setVille("Paris");
+        // Assigner l'adresse au client
+        c.setAdresse(adresse);
+        c.setDateNaissance(LocalDate.of(1999,4,2));
+        c.setPermis(List.of(Permis.A));
+        return c;
+    }
+
+    private static Client creerClientFlorian() {
+        Client c = new Client();
+        c.setId(1);
+        c.setNom("Bon");
+        c.setPrenom("Florian");
+        c.setEmail("emailFlo@email.fr");
+        c.setMotDePasse("Ceciestuntest@1");
+        // Création et remplissage de l'adresse
+        Adresse adresse = new Adresse();
+        adresse.setRue("10 Rue de la Paix");
+        adresse.setCodePostal("75001");
+        adresse.setVille("Paris");
+        // Assigner l'adresse au client
+        c.setAdresse(adresse);
+        c.setDateNaissance(LocalDate.of(1992,4,2));
+        c.setPermis(List.of(Permis.A));
+        return c;
+    }
+
+    private static ClientResponseDto creerClientResponseDtoLucie() {
+        return new ClientResponseDto(
+                1,
+                "Limoges",
+                "Lucie",
+                new Adresse(
+                        1,
+                        "12 Rue de la Paix",
+                        "75001",
+                        "Paris"),
+                "emailLu@email.fr",
+                LocalDate.of(1999,4,2),
+                List.of(Permis.A)
+        );
+    }
+
+    private static ClientResponseDto creerClientResponseDtoFlorian() {
+        return new ClientResponseDto(
+                1,
+                "Bon",
+                "Florian",
+                new Adresse(
+                        1,
+                        "10 Rue de la Paix",
+                        "75001",
+                        "Paris"),
+                "emailFlo@email.fr",
+                LocalDate.of(1992,4,2),
+                List.of(Permis.A)
+        );
     }
 
 }

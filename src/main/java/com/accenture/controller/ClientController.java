@@ -115,11 +115,6 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // comportement correct, 204 No content = la ressource n'existe plus
     }
 
-//    @PutMapping
-//    ResponseEntity<ClientResponseDto> modifierClient(@RequestParam String email, @RequestParam String motDePasse, @RequestBody @Valid ClientRequestDto clientRequestDto) {
-//        ClientResponseDto reponse = clientService.modifierClient(email, motDePasse, clientRequestDto);
-//        return ResponseEntity.ok(reponse);
-//    }
 
     @Operation(summary = "Modifier partiellement un client")
     @ApiResponses(value = {

@@ -54,7 +54,7 @@ public class VoitureController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "La voiture a été ajoutée.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Client.class)) }),
+                            schema = @Schema(implementation = Voiture.class)) }),
             @ApiResponse(responseCode = "400", description = "La voiture n'a pas pu être récupérée.") })
     @GetMapping("/{id}")
     public ResponseEntity<VoitureResponseDto> trouverUneVoiture(int id) {

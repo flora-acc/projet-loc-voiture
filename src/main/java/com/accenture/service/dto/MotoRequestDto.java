@@ -22,7 +22,7 @@ public record MotoRequestDto (@NotBlank
                               String hauteurSelle,
                              @NotBlank
                              String transmission,
-                             TypeMoto type,
+                             TypeMoto typeMoto,
                              @NotNull
                              Integer tarifBase,
                              @NotNull

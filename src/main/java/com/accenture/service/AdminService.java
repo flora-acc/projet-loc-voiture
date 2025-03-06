@@ -10,9 +10,10 @@ import com.accenture.service.dto.AdminResponseDto;
 import java.util.List;
 
 public interface AdminService {
-    AdminResponseDto creerAdmin(AdminRequestDto adminRequestDto);
+
+    AdminResponseDto creerAdmin(AdminRequestDto adminRequestDto) throws AdminException;;
     List<AdminResponseDto> trouverTous();
     AdminResponseDto modifierAdminPartiellement(String email, String motDePasse, AdminRequestDto adminRequestDto) throws AdminException;
-    void supprimerAdmin(String email, String motDePasse) throws ClientException;
+    void supprimerAdmin(String email, String motDePasse) throws AdminException;
 
 }
