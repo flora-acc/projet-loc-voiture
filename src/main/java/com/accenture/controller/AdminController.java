@@ -2,11 +2,8 @@ package com.accenture.controller;
 
 import com.accenture.repository.entity.Administrateur;
 import com.accenture.service.AdminService;
-import com.accenture.service.AdminServiceImpl;
 import com.accenture.service.dto.AdminRequestDto;
 import com.accenture.service.dto.AdminResponseDto;
-import com.accenture.service.dto.ClientRequestDto;
-import com.accenture.service.dto.ClientResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -25,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@Tag(name = "Gestion des administrateurs", description = "Interface de gestion des administrateurs de l'application")
+@Tag(name = "Administrateurs", description = "Gestion des administrateurs")
 public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);

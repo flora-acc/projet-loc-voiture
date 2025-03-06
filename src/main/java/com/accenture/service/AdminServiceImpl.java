@@ -88,10 +88,9 @@ public class AdminServiceImpl implements AdminService {
             throw new AdminException("Il est nécessaire d'avoir au moins un compte administrateur.");
         }
 
-        if (admin.getMotDePasse().equals(motDePasse)) {
-            adminDao.delete(admin);
+        if (!passwordEncoder.matches(motDePasse, admin.getMotDePasse())) {
+            throw new ClientException("Identifiants incorrects");
         }
-        else throw new ClientException("Identifiants incorrects");
 
         adminDao.delete(admin);
     }

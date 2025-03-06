@@ -1,13 +1,10 @@
 package com.accenture.controller;
 
-import com.accenture.repository.entity.Client;
+
 import com.accenture.repository.entity.Moto;
-import com.accenture.repository.entity.Voiture;
 import com.accenture.service.MotoService;
 import com.accenture.service.dto.MotoRequestDto;
 import com.accenture.service.dto.MotoResponseDto;
-import com.accenture.service.dto.VoitureRequestDto;
-import com.accenture.service.dto.VoitureResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -26,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/motos")
-@Tag(name = "Location de motos", description = "Interface de gestion de location des motos de l'application")
+@Tag(name = "Motos", description = "Gestion des motos")
 public class MotoController {
 
     private MotoService motoService;

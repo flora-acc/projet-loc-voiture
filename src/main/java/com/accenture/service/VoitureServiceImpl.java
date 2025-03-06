@@ -140,10 +140,16 @@ public class VoitureServiceImpl implements VoitureService{
         }
     }
 
-    // Vérification pour les Enums et autres objets
+    // Vérification pour les Enums, Integer et autres objets
     private void verifierChamp(Object champ, String messageErreur) throws VehiculeException {
         if (champ == null) {
             throw new VehiculeException(messageErreur);
+        }
+
+        if (champ instanceof Integer valeur) {
+            if (valeur < 0) {
+                throw new VehiculeException("La valeur ne peut pas être négative.");
+            }
         }
     }
 
@@ -158,7 +164,7 @@ public class VoitureServiceImpl implements VoitureService{
         verifierChamp(voitureRequestDto.nbPlaces(), "Merci d'ajouter le nombre de places.");
         verifierChamp(voitureRequestDto.carburant(), "Merci d'ajouter le carburant.");
         verifierChamp(voitureRequestDto.nbPortes(), "Merci d'ajouter le nombre de portes.");
-        verifierChamp(voitureRequestDto.transmission(), "Merci d'ajouter la transmission.");
+        verifierChamp(voitureRequestDto.transmission(), "Merci d'ajouter le type de transmission: AUTO ou MANUELLE");
         verifierChamp(voitureRequestDto.climatisation(), "Merci d'ajouter la climatisation.");
         verifierChamp(voitureRequestDto.nbBagages(), "Merci d'ajouter le nombre de bagages possible.");
         verifierChamp(voitureRequestDto.type(), "Merci d'ajouter le type.");
@@ -168,34 +174,39 @@ public class VoitureServiceImpl implements VoitureService{
         verifierChamp(voitureRequestDto.actif(), "Merci d'indiquer si la moto est en location.");
     }
 
-    private static void remplacer(VoitureRequestDto voiture, Voiture voitureExistante) { // si ce qui m'est fourni n'est pas null, je remplace l'existant par le nouveau de la méthode PATCH
-        if (voiture.marque() != null)
+    private static void remplacer(VoitureRequestDto voiture, Voiture voitureExistante) {
+        if (estValide(voiture.marque()))
             voitureExistante.setMarque(voiture.marque());
-        if (voiture.modele() != null)
+        if (estValide(voiture.modele()))
             voitureExistante.setModele(voiture.modele());
-        if(voiture.couleur() != null)
+        if (estValide(voiture.couleur()))
             voitureExistante.setCouleur(voiture.couleur());
-        if(voiture.nbPlaces() != null)
+        if (voiture.nbPlaces() != null)
             voitureExistante.setNbPlaces(voiture.nbPlaces());
-        if(voiture.carburant() != null)
+        if (voiture.carburant() != null)
             voitureExistante.setCarburant(voiture.carburant());
-        if(voiture.nbPortes() != null)
+        if (voiture.nbPortes() != null)
             voitureExistante.setNbPortes(voiture.nbPortes());
-        if(voiture.transmission() != null)
+        if (voiture.transmission() != null)
             voitureExistante.setTransmission(voiture.transmission());
-        if(voiture.climatisation() != null)
+        if (voiture.climatisation() != null)
             voitureExistante.setClimatisation(voiture.climatisation());
-        if(voiture.nbBagages() != null)
+        if (voiture.nbBagages() != null)
             voitureExistante.setNbBagages(voiture.nbBagages());
-        if(voiture.type() != null)
+        if (voiture.type() != null)
             voitureExistante.setType(voiture.type());
-        if(voiture.tarifBase() != null)
+        if (voiture.tarifBase() != null)
             voitureExistante.setTarifBase(voiture.tarifBase());
-        if(voiture.kilometrage() != null)
+        if (voiture.kilometrage() != null)
             voitureExistante.setKilometrage(voiture.kilometrage());
-        if(voiture.actif() != null)
+        if (voiture.actif() != null)
             voitureExistante.setActif(voiture.actif());
-        if(voiture.retireParc() != null)
+        if (voiture.retireParc() != null)
             voitureExistante.setRetireParc(voiture.retireParc());
+    }
+
+    // Vérifie que la valeur est non nulle, non vide et n'est pas un placeholder
+    private static boolean estValide(String valeur) {
+        return valeur != null && !valeur.trim().isEmpty() && !"string".equalsIgnoreCase(valeur.trim());
     }
 }

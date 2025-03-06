@@ -134,24 +134,32 @@ public class ClientServiceImpl implements ClientService {
      METHODES PRIVEES
      *********************************************/
 
-    private static void remplacer(ClientRequestDto client, Client clientExistant) { // si ce qui m'est fourni n'est pas null, je remplace l'existant par le nouveau de la méthode PATCH
-        if (client.nom() != null)
+    private static void remplacer(ClientRequestDto client, Client clientExistant) {
+        if (estValide(client.nom()))
             clientExistant.setNom(client.nom());
-        if (client.prenom() != null)
+        if (estValide(client.prenom()))
             clientExistant.setPrenom(client.prenom());
         if (client.adresse() != null) {
-            clientExistant.getAdresse().setRue(client.adresse().rue());
-            clientExistant.getAdresse().setCodePostal(client.adresse().codePostal());
-            clientExistant.getAdresse().setVille((client.adresse().ville()));
+            if (estValide(client.adresse().rue()))
+                clientExistant.getAdresse().setRue(client.adresse().rue());
+            if (estValide(client.adresse().codePostal()))
+                clientExistant.getAdresse().setCodePostal(client.adresse().codePostal());
+            if (estValide(client.adresse().ville()))
+                clientExistant.getAdresse().setVille(client.adresse().ville());
         }
         if (client.dateNaissance() != null)
             clientExistant.setDateNaissance(client.dateNaissance());
-        if (client.email() != null)
+        if (estValide(client.email()))
             clientExistant.setEmail(client.email());
-        if (client.motDePasse() != null)
+        if (estValide(client.motDePasse()))
             clientExistant.setMotDePasse(client.motDePasse());
-        if (client.permis() != null)
+        if (client.permis() != null && !client.permis().isEmpty())
             clientExistant.setPermis(client.permis());
+    }
+
+    // Vérifie que la valeur est non nulle, non vide et n'est pas un placeholder
+    private static boolean estValide(String valeur) {
+        return valeur != null && !valeur.trim().isEmpty() && !"string".equalsIgnoreCase(valeur.trim());
     }
 
     //       Vérification de la majorité

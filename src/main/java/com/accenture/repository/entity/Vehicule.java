@@ -1,9 +1,6 @@
 package com.accenture.repository.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Utilisation d'une seule table pour tous les types de véhicules
 public abstract class Vehicule {
 
     @Id

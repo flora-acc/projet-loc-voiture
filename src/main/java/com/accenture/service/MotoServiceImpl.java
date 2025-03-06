@@ -146,6 +146,11 @@ public class MotoServiceImpl implements MotoService {
         if (champ == null) {
             throw new VehiculeException(messageErreur);
         }
+        if (champ instanceof Integer valeur) {
+            if (valeur < 0) {
+                throw new VehiculeException("La valeur ne peut pas être négative.");
+            }
+        }
     }
 
     private void verifierMoto(MotoRequestDto motoRequestDto) throws VehiculeException {

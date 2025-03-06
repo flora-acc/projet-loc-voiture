@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/voitures")
-@Tag(name = "Location de voitures", description = "Interface de gestion de location des voitures de l'application")
+@Tag(name = "Voitures", description = "Gestion des voitures")
 public class VoitureController {
 
     private VoitureService voitureService;

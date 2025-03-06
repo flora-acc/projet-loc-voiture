@@ -12,8 +12,8 @@ public class SwaggerConfig {
     OpenAPI api() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Gestion Locations")
-                        .description("Interface de gestions du parc locatif véhicule")
+                        .title("Gestion de location de véhicules")
+                        .description("Interface de gestion du parc locatif véhicule")
                         .license(new License()
                                 .name("AGPLv3")
                                 .url("https://www.gnu.org/licenses/agpl-3.0.html")));

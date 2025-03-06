@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "client")
 public class Client extends UtilisateurConnecte{
 
     @Id

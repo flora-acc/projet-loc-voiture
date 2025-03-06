@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "administrateur")
 public class Administrateur extends UtilisateurConnecte {
 
     @Id

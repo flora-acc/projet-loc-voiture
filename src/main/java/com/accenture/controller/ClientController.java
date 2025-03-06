@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/client")
-@Tag(name = "Gestion des clients", description = "Interface de gestion des clients de l'application")
+@Tag(name = "Clients", description = "Gestion des clients")
 public class ClientController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
@@ -84,8 +84,8 @@ public class ClientController {
                                                                                      {
                                                                                        "nom": "Durand",
                                                                                        "prenom": "Michel",
-                                                                                       "email": "exemple@email.fr",
-                                                                                       "motDePasse": "Exemple",
+                                                                                       "email": "exemple1@email.fr",
+                                                                                       "motDePasse": "Exemple@1",
                                                                                        "adresse": {
                                                                                          "rue": "1 rue de la paix",
                                                                                          "codePostal": "75001",
