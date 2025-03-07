@@ -58,9 +58,10 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientDao.findByEmail(email)
                 .orElseThrow(() -> new ClientException("Ce compte ne correspond pas"));
 
-        if (!client.getMotDePasse().equals(motDePasse)) {
+        if (!passwordEncoder.matches(motDePasse, client.getMotDePasse())) {
             throw new ClientException("Identifiants incorrects");
         }
+
         return clientMapper.toClientResponseDto(client);
     }
 

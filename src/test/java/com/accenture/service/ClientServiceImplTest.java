@@ -293,11 +293,13 @@ class ClientServiceImplTest {
     @DisplayName("Test modifierClientPartiellement() : la modification est enregistrée en base de données")
     @Test
     void testModifierClientPartiellementOk() {
-        // Given
+        // renvoie un objet de type Client
         Client clientExistant = creerClientFlorian();
+        // récupération des données du client existant
         String email = clientExistant.getEmail();
         String motDePasse = clientExistant.getMotDePasse();
 
+        // créer le DTO de mise à jour
         ClientRequestDto clientRequestDto = new ClientRequestDto("NouveauNom", clientExistant.getPrenom(),
                 new AdresseRequestDto(clientExistant.getAdresse().getRue(),
                         clientExistant.getAdresse().getCodePostal(),
@@ -305,9 +307,11 @@ class ClientServiceImplTest {
                 clientExistant.getEmail(), clientExistant.getMotDePasse(),
                 clientExistant.getDateNaissance(), clientExistant.getPermis());
 
+        // on crée un nouveau client (copie de clientExistant
         Client clientMisAJour = creerClientFlorian();
         clientMisAJour.setNom("NouveauNom");
 
+        // la réponse attendue après que la modification ait été appliquée avec succès.
         ClientResponseDto responseDto = new ClientResponseDto(1, "NouveauNom", clientMisAJour.getPrenom(),
                 new Adresse(1, clientMisAJour.getAdresse().getRue(),
                         clientMisAJour.getAdresse().getCodePostal(),
@@ -315,14 +319,17 @@ class ClientServiceImplTest {
                 clientMisAJour.getEmail(),
                 clientMisAJour.getDateNaissance(), clientMisAJour.getPermis());
 
+        // on dit à Mockito de renvoyer un Optional contenant clientExistant
         Mockito.when(daoMock.findByEmail(email)).thenReturn(Optional.of(clientExistant));
+        // simule la sauvegarde du client dans la base de données
         Mockito.when(daoMock.save(Mockito.any(Client.class))).thenReturn(clientExistant);
+        // convertit le Client mis à jour en un ClientResponseDto
         Mockito.when(mapperMock.toClientResponseDto(clientMisAJour)).thenReturn(responseDto);
 
-        // When
+        // appel de la méthode à tester
         ClientResponseDto response = service.modifierClientPartiellement(email, motDePasse, clientRequestDto);
 
-        // Then
+        // Si la méthode fonctionne correctement, elle renvoit un DTO
         assertNotNull(response);
         assertEquals("NouveauNom", response.nom());
         Mockito.verify(daoMock, Mockito.times(1)).save(clientExistant);
